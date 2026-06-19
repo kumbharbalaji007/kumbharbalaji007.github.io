@@ -156,4 +156,34 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // Article Filtering Logic
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const articleCards = document.querySelectorAll('.article-card');
+
+    if (filterBtns.length > 0) {
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                articleCards.forEach(card => {
+                    if (filterValue === 'all') {
+                        card.classList.remove('hide');
+                    } else {
+                        const categories = card.getAttribute('data-category').split(' ');
+                        if (categories.includes(filterValue)) {
+                            card.classList.remove('hide');
+                        } else {
+                            card.classList.add('hide');
+                        }
+                    }
+                });
+            });
+        });
+    }
 });

@@ -345,6 +345,22 @@ a { text-decoration: none; color: inherit; }
 .contact-form input, .contact-form textarea { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; color: #fff; font-family: 'Inter', sans-serif; font-size: 1rem; }
 .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--helix-accent-blue); box-shadow: 0 0 10px rgba(0,230,255,0.2); }
 
+/* --- ARTICLES & KNOWLEDGE BASE --- */
+.article-filters { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+.filter-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary); padding: 0.8rem 1.5rem; border-radius: 30px; cursor: pointer; transition: all 0.3s ease; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 1rem; }
+.filter-btn:hover, .filter-btn.active { background: var(--helix-accent-blue); color: var(--helix-bg); border-color: var(--helix-accent-blue); box-shadow: 0 0 15px rgba(0,230,255,0.3); }
+
+.articles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+.article-card { display: flex; flex-direction: column; transition: transform 0.3s ease, opacity 0.3s ease, border-color 0.3s ease; }
+.article-card:hover { transform: translateY(-5px); border-color: var(--helix-accent-blue); box-shadow: 0 10px 30px rgba(0,230,255,0.1); }
+.article-tag { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--helix-accent-orange); margin-bottom: 1rem; font-weight: 800; }
+.article-card h3 { font-size: 1.3rem; margin-bottom: 1rem; color: #fff; line-height: 1.4; }
+.article-card p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1; }
+.read-more { color: var(--helix-accent-blue); font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px; transition: gap 0.3s ease; }
+.read-more:hover { gap: 10px; color: #fff; }
+
+.article-card.hide { display: none; }
+
 /* Responsive */
 @media (max-width: 1024px) {
     .hero-split-container { flex-direction: column; text-align: center; }
