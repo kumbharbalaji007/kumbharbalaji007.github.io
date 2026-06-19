@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Balaji Kumbhar | BMC Helix & ServiceNow Specialist</title>
-    <meta name="description" content="Portfolio of Balaji Kumbhar, specializing in BMC Helix Implementation, ServiceNow, and Kubernetes DevOps.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </head>
@@ -19,153 +16,176 @@
         <div class="glow bmc-glow"></div>
     </div>
 
-    <!-- 50% BMC Helix Branding -->
-    <header class="hero section-helix">
-        <nav>
-            <div class="logo">BK.</div>
-            <ul class="nav-links">
-                <li><a href="#about">Journey</a></li>
-                <li><a href="#expertise">Expertise</a></li>
-                <li><a href="#certifications">Certifications</a></li>
-            </ul>
-        </nav>
-        
-        <div class="hero-content">
-            <div class="glass-card profile-card">
-                <span class="badge helix-badge">BMC Helix Implementation</span>
-                <h1 class="name">Balaji Kumbhar</h1>
-                <h2 class="title">ITSM Specialist & DevOps Engineer</h2>
-                <p class="summary">
-                    Extensive background in <strong>BMC Technologies</strong> since the beginning of my career. Currently leading BMC Helix implementations and Kubernetes DevOps, while actively expanding my toolkit to become a certified <strong>ServiceNow Administrator</strong>.
-                </p>
-                <div class="location-tag">
-                    <i class="fa-solid fa-location-dot"></i> Based in Riyadh, Saudi Arabia
-                </div>
-                <div class="cta-group">
-                    <a href="#about" class="btn btn-primary helix-btn">Explore My Journey</a>
-                    <a href="#certifications" class="btn btn-outline">View Certifications</a>
-                </div>
-            </div>
-        </div>
-    </header>
+    <!-- Scroll snapping container to enforce multiple scrolls -->
+    <div class="scroll-container">
 
-    <main>
-        <!-- About / Timeline -->
-        <section id="about" class="timeline-section section-helix">
-            <div class="container">
-                <h2 class="section-title">My Professional Journey</h2>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-dot helix-dot"></div>
-                        <div class="timeline-content glass-card">
-                            <h3>The Beginning</h3>
-                            <p>Hailing from <strong>Latur</strong>, I pursued my <strong>MCA in Pune</strong>, setting a strong technical foundation.</p>
-                        </div>
+        <!-- ==========================================
+             SECTION 1: HERO (BMC Helix Branding) 
+        =========================================== -->
+        <section class="scroll-section section-helix" id="home">
+            <!-- Decorative Helix shapes -->
+            <div class="helix-decoration">
+                <div class="helix-wave"></div>
+                <div class="helix-wave wave-offset"></div>
+            </div>
+
+            <div class="container hero-container">
+                <div class="glass-card profile-card">
+                    <div class="helix-brand-logo">
+                        <span class="helix-logo-text">BMC <strong>Helix</strong></span>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot helix-dot"></div>
-                        <div class="timeline-content glass-card">
-                            <h3>Early Career</h3>
-                            <p>Started my professional journey in <strong>Pune</strong> (3 years) focusing on core IT infrastructure and BMC tools.</p>
-                        </div>
+                    <h1 class="name">Balaji Kumbhar</h1>
+                    <h2 class="title">DevOps Engineer & ITSM Architect</h2>
+                    <p class="summary">
+                        Architecting the future of enterprise IT. A distinguished specialist leading <strong>BMC Helix Implementations</strong> and Kubernetes DevOps. Expanding into ServiceNow to forge seamless, cross-platform enterprise solutions.
+                    </p>
+                    <div class="location-tag">
+                        <i class="fa-solid fa-location-dot"></i> Based in Riyadh, Saudi Arabia
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot helix-dot"></div>
-                        <div class="timeline-content glass-card">
-                            <h3>Career Growth</h3>
-                            <p>Expanded my expertise during a 3-year stint in <strong>Mumbai</strong>, followed by another successful phase back in <strong>Pune</strong>.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot helix-dot"></div>
-                        <div class="timeline-content glass-card">
-                            <h3>Global Exposure</h3>
-                            <p>Took my expertise international, delivering critical IT solutions in <strong>Kuwait</strong>.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item active">
-                        <div class="timeline-dot helix-dot pulse"></div>
-                        <div class="timeline-content glass-card active-card">
-                            <h3>Present Day</h3>
-                            <p>Currently based in <strong>Riyadh</strong>, focused on modern <strong>BMC Helix Implementation</strong> and <strong>Kubernetes DevOps</strong>.</p>
-                        </div>
+                    <div class="scroll-prompt">
+                        <p>Scroll to Explore</p>
+                        <i class="fa-solid fa-chevron-down bounce"></i>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 30% ServiceNow Branding -->
-        <section id="expertise" class="expertise-section section-servicenow">
+        <!-- ==========================================
+             SECTION 2: BMC HELIX CERTIFICATIONS
+        =========================================== -->
+        <section class="scroll-section section-helix" id="helix-certs">
             <div class="container">
-                <div class="servicenow-branding">
-                    <span class="branding-label">Expanding Horizons</span>
-                </div>
-                <h2 class="section-title sn-title">The Next Frontier: ServiceNow</h2>
-                <div class="expertise-grid">
-                    <div class="glass-card sn-card">
-                        <div class="card-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                        <h3>ServiceNow Administration</h3>
-                        <p>Currently mastering ServiceNow administration. Integrating SNOW into my toolkit to deliver comprehensive, cross-platform ITSM solutions.</p>
-                    </div>
-                    <div class="glass-card sn-card">
-                        <div class="card-icon"><i class="fa-solid fa-server"></i></div>
-                        <h3>Kubernetes DevOps</h3>
-                        <p>Modernizing infrastructure with K8s. Bridging the gap between robust ITSM frameworks and agile deployment practices.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 20% BMC Software / Control-M Branding -->
-        <section id="certifications" class="certifications-section section-bmc">
-            <div class="container">
-                <h2 class="section-title bmc-title">BMC Software Excellence</h2>
-                <p class="section-subtitle">A proven track record with BMC certifications, including Control-M and advanced Helix modules.</p>
+                <h2 class="section-title">BMC Helix Mastery</h2>
+                <p class="section-subtitle">Certified expertise across the modern BMC Helix ecosystem.</p>
                 
                 <div class="cert-grid">
-                    <div class="glass-card cert-card bmc-card highlight">
-                        <i class="fa-solid fa-award cert-icon"></i>
-                        <h4>Control-M SaaS</h4>
-                        <p>Explain Learning Path</p>
-                        <span class="cert-date">Jun 12, 2026</span>
-                    </div>
-                    <div class="glass-card cert-card bmc-card">
-                        <i class="fa-solid fa-certificate cert-icon"></i>
+                    <div class="glass-card cert-card helix-card">
+                        <i class="fa-solid fa-cloud cert-icon helix-icon"></i>
                         <h4>Helix Digital Workplace 22.x</h4>
                         <p>Advanced License Administrators</p>
                     </div>
-                    <div class="glass-card cert-card bmc-card">
-                        <i class="fa-solid fa-certificate cert-icon"></i>
+                    <div class="glass-card cert-card helix-card">
+                        <i class="fa-solid fa-chart-pie cert-icon helix-icon"></i>
                         <h4>Helix Dashboards 23.x</h4>
                         <p>Designing for Service Management</p>
                     </div>
-                    <div class="glass-card cert-card bmc-card">
-                        <i class="fa-solid fa-certificate cert-icon"></i>
+                    <div class="glass-card cert-card helix-card">
+                        <i class="fa-solid fa-database cert-icon helix-icon"></i>
                         <h4>Helix Data Manager 21.x</h4>
                         <p>Administrators</p>
                     </div>
-                    <div class="glass-card cert-card bmc-card">
-                        <i class="fa-solid fa-certificate cert-icon"></i>
+                    <div class="glass-card cert-card helix-card">
+                        <i class="fa-solid fa-desktop cert-icon helix-icon"></i>
                         <h4>Helix Digital Workplace Advanced 20.x</h4>
                         <p>Associate Certification</p>
                     </div>
                 </div>
             </div>
         </section>
-    </main>
 
-    <footer class="section-bmc">
-        <div class="container footer-content">
-            <div class="footer-brand">Balaji Kumbhar</div>
-            <div class="social-links">
-                <a href="#"><i class="fa-brands fa-github"></i></a>
-                <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="#"><i class="fa-solid fa-envelope"></i></a>
+        <!-- ==========================================
+             SECTION 3: POETIC JOURNEY
+        =========================================== -->
+        <section class="scroll-section section-helix" id="journey">
+            <div class="container">
+                <h2 class="section-title">An Odyssey of Innovation</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot helix-dot"></div>
+                        <div class="timeline-content glass-card">
+                            <h3>The Genesis</h3>
+                            <p>From the historic roots of <strong>Latur</strong>, my quest for knowledge brought me to <strong>Pune</strong>. Here, I laid the cornerstone of my technological odyssey, forging my mind with a Master of Computer Applications.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot helix-dot"></div>
+                        <div class="timeline-content glass-card">
+                            <h3>The Crucible of Experience</h3>
+                            <p>My professional genesis truly commenced in Pune's vibrant tech hub. Over three transformative years, I dove into the depths of IT infrastructure, kindling my lifelong passion for BMC technologies.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot helix-dot"></div>
+                        <div class="timeline-content glass-card">
+                            <h3>The City of Dreams</h3>
+                            <p>Drawn by larger horizons, I ventured to <strong>Mumbai</strong>. For three years, I navigated complex enterprise architectures, cultivating resilience and mastering the art of seamless service delivery.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot helix-dot"></div>
+                        <div class="timeline-content glass-card">
+                            <h3>Global Sands</h3>
+                            <p>Returning briefly to Pune with renewed vigor, I soon spread my wings internationally. The golden sands of <strong>Kuwait</strong> became my next canvas, orchestrating critical IT solutions on a global stage.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item active">
+                        <div class="timeline-dot helix-dot pulse"></div>
+                        <div class="timeline-content glass-card active-card">
+                            <h3>The Zenith</h3>
+                            <p>Today, under the expansive skies of <strong>Riyadh</strong>, my journey culminates. Pioneering BMC Helix implementations and commanding Kubernetes DevOps, I stand ready for the next frontier.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p>&copy; 2026 Balaji Kumbhar. All rights reserved.</p>
-        </div>
-    </footer>
+        </section>
 
+        <!-- ==========================================
+             SECTION 4: SERVICENOW (30% Branding)
+        =========================================== -->
+        <section class="scroll-section section-servicenow" id="servicenow">
+            <div class="container">
+                <div class="servicenow-branding">
+                    <span class="branding-label">The Now Platform</span>
+                </div>
+                <h2 class="section-title sn-title">Expanding the Arsenal: ServiceNow</h2>
+                <div class="expertise-grid">
+                    <div class="glass-card sn-card">
+                        <div class="card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <h3>ServiceNow Administrator Path</h3>
+                        <p>After years of deep integration with BMC, I am passionately absorbing the ServiceNow ecosystem. Embracing the Now Platform to become a certified Administrator, bridging the gap between competing giants.</p>
+                    </div>
+                    <div class="glass-card sn-card">
+                        <div class="card-icon"><i class="fa-solid fa-network-wired"></i></div>
+                        <h3>Kubernetes DevOps Synergy</h3>
+                        <p>Fusing ITSM with modern deployment. Leveraging Kubernetes to ensure high availability, rapid scaling, and seamless DevOps pipelines across both BMC and ServiceNow infrastructures.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 5: BMC SOFTWARE (20% Branding)
+        =========================================== -->
+        <section class="scroll-section section-bmc" id="bmc-software">
+            <div class="container bmc-software-container">
+                <div class="bmc-software-header">
+                    <h2 class="section-title bmc-title">BMC Software Foundation</h2>
+                    <p class="section-subtitle">Honoring the roots of enterprise automation as a distinct entity.</p>
+                </div>
+                
+                <div class="cert-grid single-cert-grid">
+                    <div class="glass-card cert-card bmc-card highlight">
+                        <div class="bmc-sw-logo">bmc</div>
+                        <i class="fa-solid fa-gears cert-icon bmc-icon"></i>
+                        <h4>Control-M SaaS</h4>
+                        <p>Explain Learning Path</p>
+                        <span class="cert-date">Awarded: Jun 12, 2026</span>
+                    </div>
+                </div>
+
+                <footer class="glass-footer">
+                    <div class="footer-brand">Balaji Kumbhar</div>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-github"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                    </div>
+                    <p>&copy; 2026 Balaji Kumbhar. Forged with passion.</p>
+                </footer>
+            </div>
+        </section>
+
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
