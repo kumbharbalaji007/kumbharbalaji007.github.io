@@ -1,12 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const scrollContainer = document.querySelector('.scroll-container');
-
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
-            if (target && scrollContainer) {
+            if (target) {
                 target.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
@@ -17,9 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Intersection Observer for scroll animations (fade in / slide up)
     const observerOptions = {
-        root: scrollContainer,
+        root: null,
         rootMargin: '0px',
-        threshold: 0.2
+        threshold: 0.1
     };
 
     const observer = new IntersectionObserver((entries, observer) => {
@@ -67,4 +65,31 @@ document.addEventListener('DOMContentLoaded', () => {
             glow.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
         });
     });
+
+    // Mouse drag for horizontal timeline
+    const timelineWrapper = document.querySelector('.timeline-wrapper');
+    if (timelineWrapper) {
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        timelineWrapper.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - timelineWrapper.offsetLeft;
+            scrollLeft = timelineWrapper.scrollLeft;
+        });
+        timelineWrapper.addEventListener('mouseleave', () => {
+            isDown = false;
+        });
+        timelineWrapper.addEventListener('mouseup', () => {
+            isDown = false;
+        });
+        timelineWrapper.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - timelineWrapper.offsetLeft;
+            const walk = (x - startX) * 2; // scroll-fast
+            timelineWrapper.scrollLeft = scrollLeft - walk;
+        });
+    }
 });

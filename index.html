@@ -16,14 +16,13 @@
         <div class="glow bmc-glow"></div>
     </div>
 
-    <!-- Scroll snapping container to enforce multiple scrolls -->
-    <div class="scroll-container">
+    <!-- Regular scroll container, no snapping -->
+    <div class="page-container">
 
         <!-- ==========================================
              SECTION 1: HERO (BMC Helix Branding) 
         =========================================== -->
-        <section class="scroll-section section-helix" id="home">
-            <!-- Decorative Helix shapes -->
+        <section class="page-section section-helix" id="home">
             <div class="helix-decoration">
                 <div class="helix-wave"></div>
                 <div class="helix-wave wave-offset"></div>
@@ -42,10 +41,6 @@
                     <div class="location-tag">
                         <i class="fa-solid fa-location-dot"></i> Based in Riyadh, Saudi Arabia
                     </div>
-                    <div class="scroll-prompt">
-                        <p>Scroll to Explore</p>
-                        <i class="fa-solid fa-chevron-down bounce"></i>
-                    </div>
                 </div>
             </div>
         </section>
@@ -53,7 +48,7 @@
         <!-- ==========================================
              SECTION 2: BMC HELIX CERTIFICATIONS
         =========================================== -->
-        <section class="scroll-section section-helix" id="helix-certs">
+        <section class="page-section section-helix" id="helix-certs">
             <div class="container">
                 <h2 class="section-title">BMC Helix Mastery</h2>
                 <p class="section-subtitle">Certified expertise across the modern BMC Helix ecosystem.</p>
@@ -84,45 +79,57 @@
         </section>
 
         <!-- ==========================================
-             SECTION 3: POETIC JOURNEY
+             SECTION 3: POETIC JOURNEY (HORIZONTAL)
         =========================================== -->
-        <section class="scroll-section section-helix" id="journey">
+        <section class="page-section section-helix" id="journey">
             <div class="container">
-                <h2 class="section-title">An Odyssey of Innovation</h2>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-dot helix-dot"></div>
-                        <div class="timeline-content glass-card">
-                            <h3>The Genesis</h3>
-                            <p>From the historic roots of <strong>Latur</strong>, my quest for knowledge brought me to <strong>Pune</strong>. Here, I laid the cornerstone of my technological odyssey, forging my mind with a Master of Computer Applications.</p>
-                        </div>
+                <div class="journey-header">
+                    <div class="photo-container">
+                        <!-- Make sure you have a photo named profile.jpg in the same folder -->
+                        <img src="profile.jpg" alt="Balaji Kumbhar" class="profile-photo" onerror="this.src='https://via.placeholder.com/150/00e6ff/0b1120?text=BK'">
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot helix-dot"></div>
-                        <div class="timeline-content glass-card">
-                            <h3>The Crucible of Experience</h3>
-                            <p>My professional genesis truly commenced in Pune's vibrant tech hub. Over three transformative years, I dove into the depths of IT infrastructure, kindling my lifelong passion for BMC technologies.</p>
-                        </div>
+                    <div class="journey-title-container">
+                        <h2 class="section-title" style="margin-bottom: 0;">An Odyssey of Innovation</h2>
+                        <p class="section-subtitle" style="margin-top: 0.5rem;">My professional journey across cities and technologies.</p>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot helix-dot"></div>
-                        <div class="timeline-content glass-card">
-                            <h3>The City of Dreams</h3>
-                            <p>Drawn by larger horizons, I ventured to <strong>Mumbai</strong>. For three years, I navigated complex enterprise architectures, cultivating resilience and mastering the art of seamless service delivery.</p>
+                </div>
+                
+                <div class="timeline-wrapper">
+                    <div class="timeline-horizontal">
+                        <div class="timeline-item">
+                            <div class="timeline-dot helix-dot"></div>
+                            <div class="timeline-content glass-card">
+                                <h3>The Genesis</h3>
+                                <p>From the historic roots of <strong>Latur</strong>, my quest for knowledge brought me to <strong>Pune</strong>. Here, I laid the cornerstone of my technological odyssey with a Master of Computer Applications.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot helix-dot"></div>
-                        <div class="timeline-content glass-card">
-                            <h3>Global Sands</h3>
-                            <p>Returning briefly to Pune with renewed vigor, I soon spread my wings internationally. The golden sands of <strong>Kuwait</strong> became my next canvas, orchestrating critical IT solutions on a global stage.</p>
+                        <div class="timeline-item">
+                            <div class="timeline-dot helix-dot"></div>
+                            <div class="timeline-content glass-card">
+                                <h3>Crucible of Experience</h3>
+                                <p>My professional genesis truly commenced in Pune's vibrant tech hub. Over three transformative years, I dove into the depths of IT infrastructure and BMC technologies.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="timeline-item active">
-                        <div class="timeline-dot helix-dot pulse"></div>
-                        <div class="timeline-content glass-card active-card">
-                            <h3>The Zenith</h3>
-                            <p>Today, under the expansive skies of <strong>Riyadh</strong>, my journey culminates. Pioneering BMC Helix implementations and commanding Kubernetes DevOps, I stand ready for the next frontier.</p>
+                        <div class="timeline-item">
+                            <div class="timeline-dot helix-dot"></div>
+                            <div class="timeline-content glass-card">
+                                <h3>The City of Dreams</h3>
+                                <p>Drawn by larger horizons, I ventured to <strong>Mumbai</strong>. For three years, I navigated complex enterprise architectures and mastered seamless service delivery.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot helix-dot"></div>
+                            <div class="timeline-content glass-card">
+                                <h3>Global Sands</h3>
+                                <p>Returning briefly to Pune, I soon spread my wings internationally. The golden sands of <strong>Kuwait</strong> became my next canvas, orchestrating critical IT solutions.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot helix-dot pulse"></div>
+                            <div class="timeline-content glass-card active-card">
+                                <h3>The Zenith</h3>
+                                <p>Today, under the expansive skies of <strong>Riyadh</strong>, my journey culminates. Pioneering BMC Helix implementations and commanding Kubernetes DevOps.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -132,7 +139,7 @@
         <!-- ==========================================
              SECTION 4: SERVICENOW (30% Branding)
         =========================================== -->
-        <section class="scroll-section section-servicenow" id="servicenow">
+        <section class="page-section section-servicenow" id="servicenow">
             <div class="container">
                 <div class="servicenow-branding">
                     <span class="branding-label">The Now Platform</span>
@@ -156,7 +163,7 @@
         <!-- ==========================================
              SECTION 5: BMC SOFTWARE (20% Branding)
         =========================================== -->
-        <section class="scroll-section section-bmc" id="bmc-software">
+        <section class="page-section section-bmc" id="bmc-software">
             <div class="container bmc-software-container">
                 <div class="bmc-software-header">
                     <h2 class="section-title bmc-title">BMC Software Foundation</h2>
