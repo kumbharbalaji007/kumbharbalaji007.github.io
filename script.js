@@ -21,6 +21,17 @@ window.openCert = function(certUrl) {
     modal.style.display = 'block';
 };
 
+window.openArticle = function(articleId) {
+    const modal = document.getElementById('articleModal');
+    const container = document.getElementById('articleViewerContainer');
+    const content = document.getElementById(articleId);
+    
+    if (content) {
+        container.innerHTML = content.innerHTML;
+        modal.style.display = 'block';
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -87,21 +98,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Modal Close Logic
-    const modal = document.getElementById('certModal');
-    const closeBtn = document.querySelector('.close-btn');
+    const certModal = document.getElementById('certModal');
+    const articleModal = document.getElementById('articleModal');
+    const closeBtns = document.querySelectorAll('.close-btn');
 
-    if (closeBtn) {
-        closeBtn.onclick = function() {
-            modal.style.display = "none";
-            document.getElementById('certViewerContainer').innerHTML = ''; // Stop video/pdf processing
+    closeBtns.forEach(btn => {
+        btn.onclick = function() {
+            certModal.style.display = "none";
+            articleModal.style.display = "none";
+            document.getElementById('certViewerContainer').innerHTML = ''; 
+            document.getElementById('articleViewerContainer').innerHTML = ''; 
         }
-    }
+    });
 
     // Close when clicking outside of the modal content
     window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+        if (event.target == certModal) {
+            certModal.style.display = "none";
             document.getElementById('certViewerContainer').innerHTML = '';
+        }
+        if (event.target == articleModal) {
+            articleModal.style.display = "none";
+            document.getElementById('articleViewerContainer').innerHTML = '';
         }
     }
 

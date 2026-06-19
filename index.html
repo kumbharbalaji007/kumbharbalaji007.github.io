@@ -34,6 +34,65 @@
         </div>
     </div>
 
+    <!-- Modal for viewing articles -->
+    <div id="articleModal" class="modal">
+        <div class="modal-content article-modal-content">
+            <span class="close-btn article-close-btn">&times;</span>
+            <div id="articleViewerContainer" class="article-body-scroll"></div>
+        </div>
+    </div>
+
+    <!-- Article Content Hidden Blocks -->
+    <div id="article-content-1" style="display:none;">
+        <h2>Disaster Recovery (DR) Failover & Failback in Containerized Helix</h2>
+        <p><strong>Overview:</strong> Managing zero-data-loss DR scenarios for BMC Helix deployed on Kubernetes clusters is critical for enterprise continuity. The architecture typically involves active-standby clusters across separate geographic regions.</p>
+        <h3>1. Database Synchronization</h3>
+        <p>The foundation of Helix DR is PostgreSQL streaming replication. You must ensure that WAL (Write-Ahead Logs) are continuously shipped from the primary site to the secondary site. In a failover scenario, the standby database is promoted to primary.</p>
+        <h3>2. Persistent Volume Management</h3>
+        <p>For stateful services (like Elasticsearch or MinIO), cross-region storage replication (such as Ceph RBD mirroring or cloud-native replication like AWS EBS Snapshots) ensures data consistency before pod spin-up at the DR site.</p>
+        <h3>3. Ingress and DNS Routing</h3>
+        <p>Failover is triggered via Global Server Load Balancing (GSLB) or Route53 DNS updates. Once the standby cluster is verified healthy, DNS TTLs are flushed, routing traffic to the DR ingress controllers.</p>
+        <h3>4. Failback Procedure</h3>
+        <p>Failback requires reversing the database replication flow to sync the delta changes back to the original primary site before restoring normal operations.</p>
+    </div>
+
+    <div id="article-content-2" style="display:none;">
+        <h2>Resolving CMDB Synchronization & Reconciliation Bottlenecks</h2>
+        <p><strong>Overview:</strong> When CMDB reconciliation jobs hang or fail to sync CIs accurately from discovery sources, it directly impacts ITSM processes. Here is a proven methodology to achieve 80%+ CMDB accuracy.</p>
+        <h3>1. Identify the Bottleneck</h3>
+        <p>Check the <code>arrecond.log</code> and database execution plans. Long-running queries usually indicate missing indexes on core attributes (like SerialNumber or TokenId) on the BaseElement table.</p>
+        <h3>2. Tune Reconciliation Engine Threads</h3>
+        <p>Increase the number of threads allocated to the Reconciliation Engine in the AR System Administration Console. However, ensure your database CPU can handle the increased parallel execution.</p>
+        <h3>3. Optimize Identification Rules</h3>
+        <p>Poorly constructed identification rules (e.g., using 'Name' instead of 'SerialNumber' and 'Domain') lead to massive table scans and duplicate CIs. Restructure rules to prioritize indexed, unique attributes.</p>
+        <h3>4. Chunking and Batch Processing</h3>
+        <p>If integrating via REST API or Pentaho, ensure data is chunked. Do not push 100,000 CIs in a single transaction. Break them into batches of 2,000 to prevent AR System timeout errors.</p>
+    </div>
+
+    <div id="article-content-3" style="display:none;">
+        <h2>ServiceNow Discovery vs BMC Discovery: Enterprise Architecture</h2>
+        <p><strong>Overview:</strong> As organizations transition or operate in hybrid environments, understanding the architectural differences between ServiceNow ITOM Discovery and BMC Helix Discovery is paramount.</p>
+        <h3>1. Agentless Scanning Paradigms</h3>
+        <p>Both platforms rely heavily on agentless scanning (SSH, WMI, SNMP). However, BMC Discovery utilizes a heavily optimized reasoning engine that infers application topologies out-of-the-box, whereas ServiceNow relies on precise pattern matching and probes/sensors.</p>
+        <h3>2. MID Servers vs Outposts</h3>
+        <p>ServiceNow requires MID (Management, Instrumentation, and Discovery) servers deployed securely within the customer network. BMC Helix utilizes 'Outposts' which serve a nearly identical function—bridging the SaaS platform to the secure on-premise infrastructure securely via HTTPS.</p>
+        <h3>3. CMDB Data Models</h3>
+        <p>ServiceNow uses the CSDM (Common Service Data Model), which closely aligns infrastructure to business services. BMC uses the CDM (Common Data Model). Mapping classes between BMC's <code>BMC_ComputerSystem</code> and ServiceNow's <code>cmdb_ci_computer</code> requires careful ETL planning.</p>
+    </div>
+
+    <div id="article-content-4" style="display:none;">
+        <h2>Automating ITSM Deployments via Helm Charts & ArgoCD</h2>
+        <p><strong>Overview:</strong> Implementing GitOps principles to manage complex ITSM container deployments ensures configuration consistency across DEV, QA, and PROD environments.</p>
+        <h3>1. The Helm Chart Structure</h3>
+        <p>Containerized ITSM platforms consist of dozens of microservices. Managing them requires custom Helm charts that template environment variables (DB connections, memory limits) into <code>values-prod.yaml</code> and <code>values-dev.yaml</code>.</p>
+        <h3>2. Setting up ArgoCD</h3>
+        <p>ArgoCD is deployed into the Kubernetes cluster and configured to monitor a secure Git repository. Any changes pushed to the `main` branch of the Git repo are automatically detected by ArgoCD.</p>
+        <h3>3. The Sync Process</h3>
+        <p>When ArgoCD detects a configuration drift (e.g., changing an ITSM pod replica count from 2 to 4 in Git), it automatically applies the difference to the Kubernetes cluster, keeping the cluster in sync with the repository.</p>
+        <h3>4. Secrets Management</h3>
+        <p>Never store raw database passwords in Git. Use tools like HashiCorp Vault or Bitnami Sealed Secrets. ArgoCD will inject the secure secrets into the pods during deployment.</p>
+    </div>
+
     <div class="page-container">
 
         <!-- ==========================================
@@ -357,7 +416,7 @@
                         <div class="article-tag">BMC Helix / K8s</div>
                         <h3>Disaster Recovery (DR) Failover & Failback in Containerized Helix</h3>
                         <p>A comprehensive guide on managing zero-data-loss DR scenarios for BMC Helix deployed on Kubernetes clusters, including database synchronization and ingress routing.</p>
-                        <a href="#" class="read-more" onclick="alert('Full article coming soon!'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="#" class="read-more" onclick="openArticle('article-content-1'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                     
                     <!-- Article 2 -->
@@ -365,7 +424,7 @@
                         <div class="article-tag">BMC Helix ITSM</div>
                         <h3>Resolving CMDB Synchronization & Reconciliation Bottlenecks</h3>
                         <p>Step-by-step troubleshooting for when CMDB reconciliation jobs hang or fail to sync CIs accurately from discovery sources. Achieving 80%+ accuracy.</p>
-                        <a href="#" class="read-more" onclick="alert('Full article coming soon!'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="#" class="read-more" onclick="openArticle('article-content-2'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
 
                     <!-- Article 3 -->
@@ -373,7 +432,7 @@
                         <div class="article-tag">ServiceNow</div>
                         <h3>ServiceNow Discovery vs BMC Discovery: Enterprise Architecture</h3>
                         <p>An architectural comparison of deploying ServiceNow ITOM Discovery in environments heavily reliant on legacy BMC footprints.</p>
-                        <a href="#" class="read-more" onclick="alert('Full article coming soon!'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="#" class="read-more" onclick="openArticle('article-content-3'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
 
                     <!-- Article 4 -->
@@ -381,7 +440,7 @@
                         <div class="article-tag">Kubernetes / DevOps</div>
                         <h3>Automating ITSM Deployments via Helm Charts & ArgoCD</h3>
                         <p>How to implement GitOps principles to manage complex ITSM container deployments, ensuring configuration consistency across environments.</p>
-                        <a href="#" class="read-more" onclick="alert('Full article coming soon!'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="#" class="read-more" onclick="openArticle('article-content-4'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
