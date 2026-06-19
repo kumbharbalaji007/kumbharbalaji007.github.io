@@ -16,20 +16,27 @@
         <div class="glow bmc-glow"></div>
     </div>
 
-    <!-- Regular scroll container, no snapping -->
+    <!-- Modal for viewing certificates -->
+    <div id="certModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="certViewerContainer"></div>
+        </div>
+    </div>
+
     <div class="page-container">
 
         <!-- ==========================================
-             SECTION 1: HERO (BMC Helix Branding) 
+             SECTION 1: HERO (FULL PAGE SPLIT)
         =========================================== -->
-        <section class="page-section section-helix" id="home">
+        <section class="page-section section-helix full-hero" id="home">
             <div class="helix-decoration">
                 <div class="helix-wave"></div>
                 <div class="helix-wave wave-offset"></div>
             </div>
 
-            <div class="container hero-container">
-                <div class="glass-card profile-card">
+            <div class="container hero-split-container">
+                <div class="hero-left">
                     <div class="helix-brand-logo">
                         <span class="helix-logo-text">BMC <strong>Helix</strong></span>
                     </div>
@@ -41,95 +48,89 @@
                     <div class="location-tag">
                         <i class="fa-solid fa-location-dot"></i> Based in Riyadh, Saudi Arabia
                     </div>
+                    <div class="hero-cta">
+                        <!-- Ensure your CV is named Balaji_Kumbhar_CV.pdf and placed in the folder -->
+                        <a href="Balaji_Kumbhar_CV.pdf" download class="btn btn-primary helix-btn"><i class="fa-solid fa-download"></i> Download CV</a>
+                        <a href="#contact" class="btn btn-outline"><i class="fa-solid fa-paper-plane"></i> Connect</a>
+                        <a href="#cert-vault" class="btn btn-outline"><i class="fa-solid fa-certificate"></i> Certs</a>
+                    </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- ==========================================
-             SECTION 2: BMC HELIX CERTIFICATIONS
-        =========================================== -->
-        <section class="page-section section-helix" id="helix-certs">
-            <div class="container">
-                <h2 class="section-title">BMC Helix Mastery</h2>
-                <p class="section-subtitle">Certified expertise across the modern BMC Helix ecosystem.</p>
-                
-                <div class="cert-grid">
-                    <div class="glass-card cert-card helix-card">
-                        <i class="fa-solid fa-cloud cert-icon helix-icon"></i>
-                        <h4>Helix Digital Workplace 22.x</h4>
-                        <p>Advanced License Administrators</p>
-                    </div>
-                    <div class="glass-card cert-card helix-card">
-                        <i class="fa-solid fa-chart-pie cert-icon helix-icon"></i>
-                        <h4>Helix Dashboards 23.x</h4>
-                        <p>Designing for Service Management</p>
-                    </div>
-                    <div class="glass-card cert-card helix-card">
-                        <i class="fa-solid fa-database cert-icon helix-icon"></i>
-                        <h4>Helix Data Manager 21.x</h4>
-                        <p>Administrators</p>
-                    </div>
-                    <div class="glass-card cert-card helix-card">
-                        <i class="fa-solid fa-desktop cert-icon helix-icon"></i>
-                        <h4>Helix Digital Workplace Advanced 20.x</h4>
-                        <p>Associate Certification</p>
+                <div class="hero-right">
+                    <div class="floating-cards-wrapper">
+                        <div class="float-card glass-card did-card">
+                            <div class="card-glow"></div>
+                            <i class="fa-solid fa-chart-line card-icon"></i>
+                            <h3>What I Delivered</h3>
+                            <p>Spearheaded critical enterprise deployments and deep integrations across global ministries, utility giants, and Fortune 500 corporations, establishing resilient ITSM backbones.</p>
+                        </div>
+                        
+                        <div class="float-card glass-card can-card">
+                            <div class="card-glow"></div>
+                            <i class="fa-solid fa-rocket card-icon"></i>
+                            <h3>What I Can Build For You</h3>
+                            <p>Drive true digital transformation by architecting scalable ITSM frameworks, executing flawless platform migrations, and deploying highly automated Kubernetes DevOps pipelines.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- ==========================================
-             SECTION 3: POETIC JOURNEY (HORIZONTAL)
+             SECTION 2: POETIC JOURNEY (SINGLE LINE)
         =========================================== -->
         <section class="page-section section-helix" id="journey">
             <div class="container">
                 <div class="journey-header">
                     <div class="photo-container">
-                        <!-- Make sure you have a photo named profile.jpg in the same folder -->
                         <img src="profile.jpg" alt="Balaji Kumbhar" class="profile-photo" onerror="this.src='https://via.placeholder.com/150/00e6ff/0b1120?text=BK'">
                     </div>
                     <div class="journey-title-container">
                         <h2 class="section-title" style="margin-bottom: 0;">An Odyssey of Innovation</h2>
-                        <p class="section-subtitle" style="margin-top: 0.5rem;">My professional journey across cities and technologies.</p>
+                        <p class="section-subtitle" style="margin-top: 0.5rem;">My professional genesis spanning cities and continents.</p>
                     </div>
                 </div>
                 
-                <div class="timeline-wrapper">
-                    <div class="timeline-horizontal">
-                        <div class="timeline-item">
-                            <div class="timeline-dot helix-dot"></div>
-                            <div class="timeline-content glass-card">
-                                <h3>The Genesis</h3>
-                                <p>From the historic roots of <strong>Latur</strong>, my quest for knowledge brought me to <strong>Pune</strong>. Here, I laid the cornerstone of my technological odyssey with a Master of Computer Applications.</p>
-                            </div>
+                <div class="single-line-timeline">
+                    <div class="sl-line"></div>
+                    
+                    <div class="sl-node">
+                        <div class="sl-dot helix-dot"></div>
+                        <div class="sl-content sl-up glass-card">
+                            <h4>The Genesis</h4>
+                            <p>Latur to Pune MCA</p>
                         </div>
-                        <div class="timeline-item">
-                            <div class="timeline-dot helix-dot"></div>
-                            <div class="timeline-content glass-card">
-                                <h3>Crucible of Experience</h3>
-                                <p>My professional genesis truly commenced in Pune's vibrant tech hub. Over three transformative years, I dove into the depths of IT infrastructure and BMC technologies.</p>
-                            </div>
+                    </div>
+                    
+                    <div class="sl-node">
+                        <div class="sl-dot helix-dot"></div>
+                        <div class="sl-content sl-down glass-card">
+                            <h4>The Crucible</h4>
+                            <p>Pune IT Ops (3 Yrs)</p>
                         </div>
-                        <div class="timeline-item">
-                            <div class="timeline-dot helix-dot"></div>
-                            <div class="timeline-content glass-card">
-                                <h3>The City of Dreams</h3>
-                                <p>Drawn by larger horizons, I ventured to <strong>Mumbai</strong>. For three years, I navigated complex enterprise architectures and mastered seamless service delivery.</p>
-                            </div>
+                    </div>
+
+                    <div class="sl-node">
+                        <div class="sl-dot helix-dot"></div>
+                        <div class="sl-content sl-up glass-card">
+                            <h4>City of Dreams</h4>
+                            <p>Mumbai Delivery (3 Yrs)</p>
                         </div>
-                        <div class="timeline-item">
-                            <div class="timeline-dot helix-dot"></div>
-                            <div class="timeline-content glass-card">
-                                <h3>Global Sands</h3>
-                                <p>Returning briefly to Pune, I soon spread my wings internationally. The golden sands of <strong>Kuwait</strong> became my next canvas, orchestrating critical IT solutions.</p>
-                            </div>
+                    </div>
+
+                    <div class="sl-node">
+                        <div class="sl-dot helix-dot"></div>
+                        <div class="sl-content sl-down glass-card">
+                            <h4>Global Sands</h4>
+                            <p>Kuwait Enterprise IT</p>
                         </div>
-                        <div class="timeline-item">
-                            <div class="timeline-dot helix-dot pulse"></div>
-                            <div class="timeline-content glass-card active-card">
-                                <h3>The Zenith</h3>
-                                <p>Today, under the expansive skies of <strong>Riyadh</strong>, my journey culminates. Pioneering BMC Helix implementations and commanding Kubernetes DevOps.</p>
-                            </div>
+                    </div>
+
+                    <div class="sl-node">
+                        <div class="sl-dot helix-dot pulse"></div>
+                        <div class="sl-content sl-up glass-card active-sl">
+                            <h4>The Zenith</h4>
+                            <p>Riyadh DevOps & ITSM</p>
                         </div>
                     </div>
                 </div>
@@ -137,117 +138,117 @@
         </section>
 
         <!-- ==========================================
-             SECTION 4: GLOBAL PROJECTS & CLIENTS
+             SECTION 3: PROJECTS (HONEYCOMB / MATRIX)
         =========================================== -->
         <section class="page-section section-helix" id="projects">
             <div class="container">
                 <h2 class="section-title">Global Footprint & Projects</h2>
                 <p class="section-subtitle">Delivering enterprise excellence across diverse industries and geographies.</p>
                 
-                <div class="matrix-grid">
-                    <div class="matrix-card">
-                        <div class="matrix-logo-container">
-                            <img src="https://logo.clearbit.com/neom.com" alt="NEOM Logo" class="matrix-logo" onerror="this.src='https://via.placeholder.com/120x40/ffffff/000000?text=NEOM'">
+                <div class="honeycomb-grid">
+                    <div class="honeycomb-cell glass-card">
+                        <img src="https://www.google.com/s2/favicons?domain=neom.com&sz=128" alt="NEOM" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="hc-text-logo" style="display:none;">NEOM</span>
+                        <div class="hc-overlay">
+                            <h4>NEOM</h4>
+                            <p>Strategic Delivery & Transformation</p>
                         </div>
-                        <h4>NEOM</h4>
-                        <p class="matrix-desc">Strategic Delivery & Digital Transformation</p>
                     </div>
-                    
-                    <div class="matrix-card">
-                        <div class="matrix-logo-container">
-                            <img src="https://logo.clearbit.com/aramco.com" alt="Aramco Logo" class="matrix-logo" onerror="this.src='https://via.placeholder.com/120x40/ffffff/000000?text=Aramco'">
+                    <div class="honeycomb-cell glass-card">
+                        <img src="https://www.google.com/s2/favicons?domain=aramco.com&sz=128" alt="Aramco" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="hc-text-logo" style="display:none;">ARAMCO</span>
+                        <div class="hc-overlay">
+                            <h4>Aramco</h4>
+                            <p>Enterprise Operations Deployment</p>
                         </div>
-                        <h4>Aramco</h4>
-                        <p class="matrix-desc">Enterprise Operations & Systems Deployment</p>
                     </div>
-
-                    <div class="matrix-card">
-                        <div class="matrix-logo-container">
-                            <img src="https://logo.clearbit.com/honeywell.com" alt="Honeywell Logo" class="matrix-logo" onerror="this.src='https://via.placeholder.com/120x40/ffffff/000000?text=Honeywell'">
+                    <div class="honeycomb-cell glass-card">
+                        <img src="https://www.google.com/s2/favicons?domain=honeywell.com&sz=128" alt="Honeywell" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="hc-text-logo" style="display:none;">HONEYWELL</span>
+                        <div class="hc-overlay">
+                            <h4>Honeywell</h4>
+                            <p>Infrastructure & Implementation</p>
                         </div>
-                        <h4>Honeywell</h4>
-                        <p class="matrix-desc">Infrastructure Support & Implementation</p>
                     </div>
-
-                    <div class="matrix-card">
-                        <div class="matrix-logo-container">
-                            <img src="https://logo.clearbit.com/mahle.com" alt="MAHLE Logo" class="matrix-logo" onerror="this.src='https://via.placeholder.com/120x40/ffffff/000000?text=MAHLE'">
+                    <div class="honeycomb-cell glass-card">
+                        <img src="https://www.google.com/s2/favicons?domain=mahle.com&sz=128" alt="MAHLE" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="hc-text-logo" style="display:none;">MAHLE</span>
+                        <div class="hc-overlay">
+                            <h4>MAHLE GmbH</h4>
+                            <p>Enterprise ITSM Support</p>
                         </div>
-                        <h4>MAHLE GmbH</h4>
-                        <p class="matrix-desc">Enterprise ITSM Implementation & Support</p>
                     </div>
-
-                    <div class="matrix-card">
-                        <div class="matrix-logo-container">
-                            <img src="https://logo.clearbit.com/capgemini.com" alt="Capgemini Logo" class="matrix-logo" onerror="this.src='https://via.placeholder.com/120x40/ffffff/000000?text=Capgemini'">
+                    <div class="honeycomb-cell glass-card">
+                        <img src="https://www.google.com/s2/favicons?domain=capgemini.com&sz=128" alt="Capgemini" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="hc-text-logo" style="display:none;">CAPGEMINI</span>
+                        <div class="hc-overlay">
+                            <h4>Capgemini</h4>
+                            <p>Managed Services & Delivery</p>
                         </div>
-                        <h4>Capgemini</h4>
-                        <p class="matrix-desc">Managed Services & End-to-End Delivery</p>
                     </div>
-
-                    <div class="matrix-card">
-                        <div class="matrix-logo-container">
-                            <img src="https://logo.clearbit.com/tcs.com" alt="TCS Logo" class="matrix-logo" onerror="this.src='https://via.placeholder.com/120x40/ffffff/000000?text=TCS'">
+                    <div class="honeycomb-cell glass-card">
+                        <img src="https://www.google.com/s2/favicons?domain=tcs.com&sz=128" alt="TCS" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="hc-text-logo" style="display:none;">TCS</span>
+                        <div class="hc-overlay">
+                            <h4>TCS</h4>
+                            <p>IT Consulting & Service Implementation</p>
                         </div>
-                        <h4>TCS</h4>
-                        <p class="matrix-desc">IT Consulting & Service Implementation</p>
                     </div>
-
-                    <div class="matrix-card">
-                        <div class="matrix-logo-container">
-                            <img src="https://logo.clearbit.com/kfh.com" alt="Kuwait Finance House Logo" class="matrix-logo" onerror="this.src='https://via.placeholder.com/120x40/ffffff/000000?text=KFH'">
+                    <div class="honeycomb-cell glass-card">
+                        <img src="https://www.google.com/s2/favicons?domain=kfh.com&sz=128" alt="KFH" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="hc-text-logo" style="display:none;">KFH</span>
+                        <div class="hc-overlay">
+                            <h4>Kuwait Finance House</h4>
+                            <p>ITSM Architecture Support</p>
                         </div>
-                        <h4>Kuwait Finance House</h4>
-                        <p class="matrix-desc">ITSM Architecture & Operations Support</p>
                     </div>
-
-                    <div class="matrix-card">
-                        <div class="matrix-logo-container">
-                            <img src="https://logo.clearbit.com/cargill.com" alt="Cargill Logo" class="matrix-logo" onerror="this.src='https://via.placeholder.com/120x40/ffffff/000000?text=Cargill'">
+                    <div class="honeycomb-cell glass-card">
+                        <img src="https://www.google.com/s2/favicons?domain=cargill.com&sz=128" alt="Cargill" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="hc-text-logo" style="display:none;">CARGILL</span>
+                        <div class="hc-overlay">
+                            <h4>Cargill</h4>
+                            <p>Global Implementation</p>
                         </div>
-                        <h4>Cargill</h4>
-                        <p class="matrix-desc">Global Implementation & IT Support</p>
                     </div>
-
-                    <div class="matrix-card">
-                        <div class="matrix-logo-container">
-                            <img src="https://logo.clearbit.com/mis.com.sa" alt="MIS Logo" class="matrix-logo" onerror="this.src='https://via.placeholder.com/120x40/ffffff/000000?text=MIS'">
+                    <div class="honeycomb-cell glass-card">
+                        <img src="https://www.google.com/s2/favicons?domain=mis.com.sa&sz=128" alt="MIS" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="hc-text-logo" style="display:none;">MIS</span>
+                        <div class="hc-overlay">
+                            <h4>MIS</h4>
+                            <p>Project Delivery & Integration</p>
                         </div>
-                        <h4>MIS</h4>
-                        <p class="matrix-desc">Project Delivery & Systems Integration</p>
                     </div>
-
-                    <div class="matrix-card">
-                        <div class="matrix-logo-container">
-                            <img src="https://logo.clearbit.com/marafiq.com.sa" alt="Marafiq Logo" class="matrix-logo" onerror="this.src='https://via.placeholder.com/120x40/ffffff/000000?text=Marafiq'">
+                    <div class="honeycomb-cell glass-card">
+                        <img src="https://www.google.com/s2/favicons?domain=marafiq.com.sa&sz=128" alt="Marafiq" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="hc-text-logo" style="display:none;">MARAFIQ</span>
+                        <div class="hc-overlay">
+                            <h4>Marafiq</h4>
+                            <p>Utility Infrastructure Support</p>
                         </div>
-                        <h4>Marafiq</h4>
-                        <p class="matrix-desc">Utility Infrastructure Support & Delivery</p>
                     </div>
-
-                    <div class="matrix-card">
-                        <div class="matrix-logo-container">
-                            <img src="https://logo.clearbit.com/etec.gov.sa" alt="ETEC Logo" class="matrix-logo" onerror="this.src='https://via.placeholder.com/120x40/ffffff/000000?text=ETEC'">
+                    <div class="honeycomb-cell glass-card">
+                        <img src="https://www.google.com/s2/favicons?domain=etec.gov.sa&sz=128" alt="ETEC" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="hc-text-logo" style="display:none;">ETEC</span>
+                        <div class="hc-overlay">
+                            <h4>ETEC</h4>
+                            <p>Service Management Delivery</p>
                         </div>
-                        <h4>ETEC</h4>
-                        <p class="matrix-desc">Service Management Delivery & Operations</p>
                     </div>
-
-                    <div class="matrix-card">
-                        <div class="matrix-logo-container">
-                            <img src="https://logo.clearbit.com/gasco.com.sa" alt="GASCO Logo" class="matrix-logo" onerror="this.src='https://via.placeholder.com/120x40/ffffff/000000?text=GASCO'">
+                    <div class="honeycomb-cell glass-card">
+                        <img src="https://www.google.com/s2/favicons?domain=gasco.com.sa&sz=128" alt="GASCO" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="hc-text-logo" style="display:none;">GASCO</span>
+                        <div class="hc-overlay">
+                            <h4>GASCO</h4>
+                            <p>IT Operations & Platform Support</p>
                         </div>
-                        <h4>GASCO</h4>
-                        <p class="matrix-desc">IT Operations & Platform Support</p>
                     </div>
                 </div>
-                
                 <p class="matrix-footer">These represent a selection of my past projects; my portfolio of implementations is not limited to this list.</p>
             </div>
         </section>
 
         <!-- ==========================================
-             SECTION 5: SERVICENOW (30% Branding)
+             SECTION 4: SERVICENOW
         =========================================== -->
         <section class="page-section section-servicenow" id="servicenow">
             <div class="container">
@@ -255,6 +256,13 @@
                     <span class="branding-label">The Now Platform</span>
                 </div>
                 <h2 class="section-title sn-title">Expanding the Arsenal: ServiceNow</h2>
+                
+                <div class="sn-stage-badge">
+                    <a href="https://learning.servicenow.com/x_snc_nl_lxp_recog_ShareOnSocialMedia.do?lxp_type=points&lxp_sys_id=2694cb9ec35dcb90ea5a9ab4e40131c3&latest&source=linkedin&latest" target="_blank" class="btn btn-outline sn-btn">
+                        <i class="fa-solid fa-trophy"></i> View My ServiceNow Learning Stage
+                    </a>
+                </div>
+
                 <div class="expertise-grid">
                     <div class="glass-card sn-card">
                         <div class="card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
@@ -271,31 +279,94 @@
         </section>
 
         <!-- ==========================================
-             SECTION 5: BMC SOFTWARE (20% Branding)
+             SECTION 5: ALL CERTIFICATIONS VAULT
         =========================================== -->
-        <section class="page-section section-bmc" id="bmc-software">
-            <div class="container bmc-software-container">
-                <div class="bmc-software-header">
-                    <h2 class="section-title bmc-title">BMC Software Foundation</h2>
-                    <p class="section-subtitle">Honoring the roots of enterprise automation as a distinct entity.</p>
+        <section class="page-section section-helix" id="cert-vault">
+            <div class="container">
+                <h2 class="section-title">The Certification Vault</h2>
+                <p class="section-subtitle">Click on any certificate to view it directly in the browser.</p>
+
+                <div class="cert-vault-grid">
+                    <!-- BMC Helix Certs -->
+                    <div class="cert-category">
+                        <h3><i class="fa-solid fa-cloud"></i> BMC Helix Mastery</h3>
+                        <ul class="cert-list">
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Helix/BMC Certified Associate Discovery 22x for Administrators Online Exam.pdf')">Associate Discovery 22.x</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Helix/BMC Certified Associate Helix Dashboards 23x Designing for Service Management Online Exam.pdf')">Associate Helix Dashboards 23.x</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Helix/BMC Certified Associate Helix Data Manager 21x for Administrators Online Exam.pdf')">Associate Helix Data Manager 21.x</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Helix/BMC Certified Associate Helix Digital Workplace 22x for Advanced License Administrators Online Exam.pdf')">Associate Helix Digital Workplace 22.x (Advanced)</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Helix/BMC Certified Associate Helix Digital Workplace Advanced 20x Online Exam.pdf')">Associate Helix Digital Workplace 20.x</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Helix/BMC Certified Associate Helix IT Service Management Container Deployment 21x Online Exam.pdf')">Associate Helix ITSM Container Deployment 21.x</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Helix/BMC Certified Associate HelixGPT 23.x for Users Online Exam.pdf')">Associate HelixGPT 23.x</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Helix/BMC Certified Professional AR System 20x for Developers Online Proctored Exam.pdf')">Professional AR System 20.x</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Helix/BMC Certified Professional Helix CMDB 20x Online Proctored Exam.pdf')">Professional Helix CMDB 20.x</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Helix/BMC Certified Professional Helix Digital Workplace Advanced 20x Online Proctored Exam.pdf')">Professional Helix Digital Workplace 20.x</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Helix/BMC Certified Professional Helix ITSM 20x Online Proctored Exam.pdf')">Professional Helix ITSM 20.x</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Helix/BMC Certified Professional Helix ITSM 22x Online Proctored Exam.pdf')">Professional Helix ITSM 22.x</button></li>
+                        </ul>
+                    </div>
+
+                    <!-- BMC Software Certs -->
+                    <div class="cert-category">
+                        <h3><i class="fa-solid fa-gears"></i> BMC Software & Control-M</h3>
+                        <ul class="cert-list">
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Software/DBA Solutions Explain 101 BMC Door 1 Mainframe.pdf')">DBA Solutions 101: Mainframe</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Software/DBA Solutions Explain 101 BMC Door 2 IT Ops.pdf')">DBA Solutions 101: IT Ops</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Software/DBA Solutions Explain 101 BMC Door 3 File Transfer.pdf')">DBA Solutions 101: File Transfer</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Software/DBA Solutions Explain 101 BMC Door 4 Data.pdf')">DBA Solutions 101: Data</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Software/DBA Solutions Explain 101 BMC Door 5 App Dev.pdf')">DBA Solutions 101: App Dev</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Software/DBA Solutions Explain Exam BMC Door 1 Mainframe.pdf')">DBA Solutions Exam: Mainframe</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Software/DBA Solutions Explain Exam_ BMC Helix Control_M.pdf')">DBA Solutions Exam: Control-M</button></li>
+                            <li><button class="cert-btn" onclick="openCert('certs/BMC Software/Pre-Sales Control M SaaS.png')">Pre-Sales Control-M SaaS</button></li>
+                        </ul>
+                    </div>
                 </div>
-                
-                <div class="cert-grid single-cert-grid">
-                    <div class="glass-card cert-card bmc-card highlight">
-                        <div class="bmc-sw-logo">bmc</div>
-                        <i class="fa-solid fa-gears cert-icon bmc-icon"></i>
-                        <h4>Control-M SaaS</h4>
-                        <p>Explain Learning Path</p>
-                        <span class="cert-date">Awarded: Jun 12, 2026</span>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 6: CONTACT & ADVERTISE
+        =========================================== -->
+        <section class="page-section section-helix" id="contact">
+            <div class="container">
+                <div class="contact-advertisement glass-card">
+                    <h2 class="section-title" style="margin-bottom: 1.5rem;">Ready to Boost Your ITSM?</h2>
+                    <p class="advert-text">
+                        If you are interested to get your ITSM boosted or reshape your CMDB to reach up to 80% accuracy, connect with me and let's have a discussion!
+                    </p>
+                    
+                    <div class="contact-methods">
+                        <a href="https://wa.me/966566103423" target="_blank" class="btn btn-outline wa-btn">
+                            <i class="fa-brands fa-whatsapp"></i> +966 56 610 3423
+                        </a>
+                        <a href="https://wa.me/919970740737" target="_blank" class="btn btn-outline wa-btn">
+                            <i class="fa-brands fa-whatsapp"></i> +91 99 707 40737
+                        </a>
+                        <a href="mailto:kumbharbalaji007@gmail.com" class="btn btn-outline email-btn">
+                            <i class="fa-solid fa-envelope"></i> Direct Email
+                        </a>
+                    </div>
+
+                    <div class="contact-form-wrapper">
+                        <form action="https://formsubmit.co/kumbharbalaji007@gmail.com" method="POST" class="contact-form">
+                            <!-- Hidden fields for FormSubmit configuration -->
+                            <input type="hidden" name="_subject" value="New Lead from Portfolio Website!">
+                            <input type="hidden" name="_template" value="table">
+                            
+                            <input type="text" name="Name" placeholder="Your Name" required>
+                            <input type="email" name="Email" placeholder="Your Email" required>
+                            <textarea name="Message" rows="4" placeholder="How can we reshape your CMDB today?" required></textarea>
+                            <button type="submit" class="btn btn-primary helix-btn"><i class="fa-solid fa-paper-plane"></i> Send Secure Message</button>
+                        </form>
                     </div>
                 </div>
 
-                <footer class="glass-footer">
+                <footer class="glass-footer" style="margin-top: 5rem;">
                     <div class="footer-brand">Balaji Kumbhar</div>
                     <div class="social-links">
-                        <a href="#"><i class="fa-brands fa-github"></i></a>
-                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                        <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                        <a href="https://www.linkedin.com/in/kumbharbalaji/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="mailto:kumbharbalaji007@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+                        <a href="https://wa.me/966566103423" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
                     </div>
                     <p>&copy; 2026 Balaji Kumbhar. Forged with passion.</p>
                 </footer>
