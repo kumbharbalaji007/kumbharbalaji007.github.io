@@ -348,16 +348,18 @@
                     </div>
 
                     <div class="contact-form-wrapper">
-                        <form action="https://formsubmit.co/kumbharbalaji007@gmail.com" method="POST" class="contact-form">
+                        <form id="ajax-contact-form" action="https://formsubmit.co/kumbharbalaji007@gmail.com" method="POST" class="contact-form">
                             <!-- Hidden fields for FormSubmit configuration -->
                             <input type="hidden" name="_subject" value="New Lead from Portfolio Website!">
                             <input type="hidden" name="_template" value="table">
+                            <input type="hidden" name="_captcha" value="false">
                             
                             <input type="text" name="Name" placeholder="Your Name" required>
                             <input type="email" name="Email" placeholder="Your Email" required>
                             <textarea name="Message" rows="4" placeholder="How can we reshape your CMDB today?" required></textarea>
-                            <button type="submit" class="btn btn-primary helix-btn"><i class="fa-solid fa-paper-plane"></i> Send Secure Message</button>
+                            <button type="submit" id="form-submit-btn" class="btn btn-primary helix-btn"><i class="fa-solid fa-paper-plane"></i> Send Secure Message</button>
                         </form>
+                        <div id="form-status-msg" style="display:none; margin-top: 15px; padding: 15px; border-radius: 8px; text-align: center; font-weight: 600;"></div>
                     </div>
                 </div>
 

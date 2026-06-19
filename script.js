@@ -104,4 +104,56 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('certViewerContainer').innerHTML = '';
         }
     }
+
+    // AJAX Form Submission
+    const contactForm = document.getElementById('ajax-contact-form');
+    const statusMsg = document.getElementById('form-status-msg');
+    const submitBtn = document.getElementById('form-submit-btn');
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent page redirect
+            
+            // UI Feedback
+            submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(contactForm);
+
+            fetch('https://formsubmit.co/ajax/kumbharbalaji007@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success || data.success === "true") {
+                    statusMsg.innerHTML = '<i class="fa-solid fa-check-circle"></i> Message sent successfully!';
+                    statusMsg.style.color = '#25D366';
+                    statusMsg.style.background = 'rgba(37, 211, 102, 0.1)';
+                    statusMsg.style.display = 'block';
+                    contactForm.reset();
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            })
+            .catch(error => {
+                statusMsg.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Oops! There was a problem submitting your form.';
+                statusMsg.style.color = '#ff4d4d';
+                statusMsg.style.background = 'rgba(255, 77, 77, 0.1)';
+                statusMsg.style.display = 'block';
+            })
+            .finally(() => {
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Secure Message';
+                submitBtn.disabled = false;
+                
+                // Hide message after 5 seconds
+                setTimeout(() => {
+                    statusMsg.style.display = 'none';
+                }, 5000);
+            });
+        });
+    }
 });
