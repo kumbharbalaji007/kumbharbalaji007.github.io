@@ -107,6 +107,94 @@
         <p>Never store raw database passwords in Git. Use tools like HashiCorp Vault or Bitnami Sealed Secrets. ArgoCD will inject the secure secrets into the pods during deployment.</p>
     </div>
 
+    <div id="article-content-5" style="display:none;">
+        <h2>Restoring ITSM Dashboard Connectivity & Missing OOTB Dashboards</h2>
+        <p><strong>Overview:</strong> Post-installation of the ITSM stack, a common issue is the dashboard failing to connect to the ITSM database, resulting in missing Out-Of-The-Box (OOTB) dashboards. This guide details the resolution process: updating the database connection at the pod level and re-registering tenant services via the TCTL utility.</p>
+        
+        <h3>Step 1: Add the Missing Connection from the Pod Level</h3>
+        <p>First, access the primary PostgreSQL database pod for the reporting database to update the platform URL. Use <code>patronictl list</code> to identify the leader node.</p>
+<pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1);">
+kubectl exec -it postgres-bmc-pg-ha-17-0 -n helixprodplatform -- bash
+patronictl list
+
++ Cluster: postgres-bmc-pg-ha-17 (7615280850181857344) --------+----+-----------+
+| Member                  | Host         | Role    | State     | TL | Lag in MB |
++-------------------------+--------------+---------+-----------+----+-----------+
+| postgres-bmc-pg-ha-17-0 | 10.244.4.230 | Replica | streaming |  2 |         0 |
+| postgres-bmc-pg-ha-17-1 | 10.244.2.15  | Leader  | running   |  2 |           |  <<--Login to the running Leader Pod-->>
+| postgres-bmc-pg-ha-17-2 | 10.244.5.176 | Replica | streaming |  2 |         0 |
++-------------------------+--------------+---------+-----------+----+-----------+
+
+exit
+kubectl exec -it postgres-bmc-pg-ha-17-1 -n helixprodplatform -- bash
+psql -U postgres -d reportdb
+
+# Verify current data sources
+SELECT id, org_id, name, json_data FROM public.data_source;
+
+ id |  org_id   |     name      | json_data
+----+-----------+---------------+-----------
+  1 | 342145481 | BMC Helix     | {}          <<--Reporting URL is missing--->>
+  2 | 342145481 | BMC Helix API | {}
+(2 rows)
+
+
+# Update the BMC Helix data source with the correct platform URL
+update data_source set json_data = ' {"platformURL": "https://itsm-reporting.example.com"} ' where id = 1;
+
+</pre>
+
+        <h3>Step 2: Retrieve Tenant ID from RSSO</h3>
+        <p>Before using the TCTL utility, you need your unique Tenant ID. Log into your <strong>Remedy Single Sign-On (RSSO)</strong> Admin Console. Navigate to the <strong>Tenants</strong> page, locate your target tenant, and copy the numerical Tenant ID (e.g., <code>123456789</code>).</p>
+
+        <h3>Step 3: Create the JSON Configuration File</h3>
+        <p>Create a JSON file named <code>itsm.json</code> that will be used to pass the updated service configuration to the TCTL utility. You can create this file on your server using a text editor like <code>vi</code>.</p>
+<pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1);">
+
+tctl login
+tctl get tenant-service 123456789
+GODEBUG is set to: tlsrsakex=1
+Using config file: D:\TCTL Utility\config
+HTTP Response Status: 200 OK
+TENANT                |ENVIRONMENT           |SERVICE                  |ID                                   |STATUS
+Example                   |production            |ADE Audit Service        |b1a9c70f-0103-4913-848f-6f2a1f367b97 |ACTIVE
+Example                   |production            |Credential               |4cde745c-527e-478f-bf67-6fbf2de1870f |ACTIVE
+Example                   |production            |Reporting                |c23bb1b0-103b-4887-9f8e-1db2e4387e26 |ACTIVE
+Example                   |production            |ADE Notification Service |3cf1f873-85b1-486d-954c-c7eb1e0ac4e5 |ACTIVE
+Example                   |production            |BWF                      |f2858c7f-6b3b-4bce-8e71-78cc67d100e5 |ACTIVE
+Example                   |production            |DWP                      |5d5e4240-3608-4481-b0bc-760b3ebcc520 |ACTIVE
+Example                   |production            |ITSM                     |4186250f-0eb9-4bf3-92f8-70460b26cfbc |ACTIVE
+Example                   |production            |IS                       |36884268-afdb-4716-9edd-fddede79a60c |ACTIVE
+Example                   |production            |DWPC                     |b78f93f8-0eec-4de4-ad6f-953a0b5f2369 |ACTIVE
+
+
+# vi itsm.json
+{
+  "TENANT": "example",
+  "ENVIRONMENT": "production",
+  "SERVICE": "ITSM",
+  "ID": "4186250f-0eb9-4bf3-92f8-70460b26cfbc",
+  "STATUS": "ACTIVE"
+}
+
+# Create Similar files for other service Like DWPC, DWPC, IS
+</pre>
+
+        <h3>Step 4: Restore OOTB Dashboards using the TCTL Utility For ITSM Dashboards</h3>
+        <p>With your Tenant ID and <code>itsm.json</code> file ready, log into TCTL to update the tenant services (ITSM, DWP, IS, DWPC, BWF).</p>
+<pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1);">
+
+
+# Execute updates for each service ID matching your environment:
+tctl update tenant-service 123456789 -i 4186250f-0eb9-4bf3-92f8-70460b26cfbc -f "ITSM.json"
+tctl update tenant-service 123456789 -i 5d5e4240-3608-4481-b0bc-760b3ebcc520 -f "IS.json"
+tctl update tenant-service 123456789 -i 36884268-afdb-4716-9edd-fddede79a60c -f "DWP.json"
+tctl update tenant-service 123456789 -i b78f93f8-0eec-4de4-ad6f-953a0b5f2369 -f "DWPC.json"
+tctl update tenant-service 123456789 -i f2858c7f-6b3b-4bce-8e71-78cc67d100e5 -f "BWF.json"
+</pre>
+        <p>Once the tenant services are updated, the OOTB dashboards will be fully restored and successfully connected to the reporting database.</p>
+    </div>
+
     <main class="page-container">
 
         <!-- ==========================================
@@ -260,96 +348,84 @@
                 
                 <div class="honeycomb-grid">
                     <div class="honeycomb-cell glass-card">
-                        <img src="https://www.google.com/s2/favicons?domain=neom.com&sz=128" alt="NEOM" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <span class="hc-text-logo" style="display:none;">NEOM</span>
+                        <span class="hc-text-logo">NEOM</span>
                         <div class="hc-overlay">
                             <h3>NEOM</h3>
                             <p>Strategic Delivery & Transformation</p>
                         </div>
                     </div>
                     <div class="honeycomb-cell glass-card">
-                        <img src="https://www.google.com/s2/favicons?domain=aramco.com&sz=128" alt="Aramco" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <span class="hc-text-logo" style="display:none;">ARAMCO</span>
+                        <span class="hc-text-logo">ARAMCO</span>
                         <div class="hc-overlay">
                             <h3>Aramco</h3>
                             <p>Enterprise Operations Deployment</p>
                         </div>
                     </div>
                     <div class="honeycomb-cell glass-card">
-                        <img src="https://www.google.com/s2/favicons?domain=honeywell.com&sz=128" alt="Honeywell" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <span class="hc-text-logo" style="display:none;">HONEYWELL</span>
+                        <span class="hc-text-logo">HONEYWELL</span>
                         <div class="hc-overlay">
                             <h3>Honeywell</h3>
                             <p>Infrastructure & Implementation</p>
                         </div>
                     </div>
                     <div class="honeycomb-cell glass-card">
-                        <img src="https://www.google.com/s2/favicons?domain=mahle.com&sz=128" alt="MAHLE" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <span class="hc-text-logo" style="display:none;">MAHLE</span>
+                        <span class="hc-text-logo">MAHLE</span>
                         <div class="hc-overlay">
                             <h3>MAHLE GmbH</h3>
                             <p>Enterprise ITSM Support</p>
                         </div>
                     </div>
                     <div class="honeycomb-cell glass-card">
-                        <img src="https://www.google.com/s2/favicons?domain=capgemini.com&sz=128" alt="Capgemini" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <span class="hc-text-logo" style="display:none;">CAPGEMINI</span>
+                        <span class="hc-text-logo">CAPGEMINI</span>
                         <div class="hc-overlay">
                             <h3>Capgemini</h3>
                             <p>Managed Services & Delivery</p>
                         </div>
                     </div>
                     <div class="honeycomb-cell glass-card">
-                        <img src="https://www.google.com/s2/favicons?domain=tcs.com&sz=128" alt="TCS" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <span class="hc-text-logo" style="display:none;">TCS</span>
+                        <span class="hc-text-logo">TCS</span>
                         <div class="hc-overlay">
                             <h3>TCS</h3>
                             <p>IT Consulting & Service Implementation</p>
                         </div>
                     </div>
                     <div class="honeycomb-cell glass-card">
-                        <img src="https://www.google.com/s2/favicons?domain=kfh.com&sz=128" alt="KFH" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <span class="hc-text-logo" style="display:none;">KFH</span>
+                        <span class="hc-text-logo">KFH</span>
                         <div class="hc-overlay">
                             <h3>Kuwait Finance House</h3>
                             <p>ITSM Architecture Support</p>
                         </div>
                     </div>
                     <div class="honeycomb-cell glass-card">
-                        <img src="https://www.google.com/s2/favicons?domain=cargill.com&sz=128" alt="Cargill" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <span class="hc-text-logo" style="display:none;">CARGILL</span>
+                        <span class="hc-text-logo">CARGILL</span>
                         <div class="hc-overlay">
                             <h3>Cargill</h3>
                             <p>Global Implementation</p>
                         </div>
                     </div>
                     <div class="honeycomb-cell glass-card">
-                        <img src="https://www.google.com/s2/favicons?domain=mis.com.sa&sz=128" alt="MIS" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <span class="hc-text-logo" style="display:none;">MIS</span>
+                        <span class="hc-text-logo">MIS</span>
                         <div class="hc-overlay">
                             <h3>MIS</h3>
                             <p>Project Delivery & Integration</p>
                         </div>
                     </div>
                     <div class="honeycomb-cell glass-card">
-                        <img src="https://www.google.com/s2/favicons?domain=marafiq.com.sa&sz=128" alt="Marafiq" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <span class="hc-text-logo" style="display:none;">MARAFIQ</span>
+                        <span class="hc-text-logo">MARAFIQ</span>
                         <div class="hc-overlay">
                             <h3>Marafiq</h3>
                             <p>Utility Infrastructure Support</p>
                         </div>
                     </div>
                     <div class="honeycomb-cell glass-card">
-                        <img src="https://www.google.com/s2/favicons?domain=etec.gov.sa&sz=128" alt="ETEC" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <span class="hc-text-logo" style="display:none;">ETEC</span>
+                        <span class="hc-text-logo">ETEC</span>
                         <div class="hc-overlay">
                             <h3>ETEC</h3>
                             <p>Service Management Delivery</p>
                         </div>
                     </div>
                     <div class="honeycomb-cell glass-card">
-                        <img src="https://www.google.com/s2/favicons?domain=gasco.com.sa&sz=128" alt="GASCO" class="hc-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <span class="hc-text-logo" style="display:none;">GASCO</span>
+                        <span class="hc-text-logo">GASCO</span>
                         <div class="hc-overlay">
                             <h3>GASCO</h3>
                             <p>IT Operations & Platform Support</p>
@@ -485,6 +561,14 @@
                         <h3>Automating ITSM Deployments via Helm Charts & ArgoCD</h3>
                         <p>How to implement GitOps principles to manage complex ITSM container deployments, ensuring configuration consistency across environments.</p>
                         <a href="#" class="read-more" onclick="openArticle('article-content-4'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- Article 5 -->
+                    <div class="article-card glass-card" data-category="bmc k8s">
+                        <div class="article-tag">BMC Helix / K8s</div>
+                        <h3>Restoring ITSM Dashboard Connectivity & OOTB Dashboards</h3>
+                        <p>A technical guide on resolving post-installation connection issues between the reporting dashboard and the ITSM Database using PostgreSQL and the TCTL utility.</p>
+                        <a href="#" class="read-more" onclick="openArticle('article-content-5'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>

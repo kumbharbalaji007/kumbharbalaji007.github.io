@@ -123,6 +123,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Basic Protection against casual downloading of certs
+    const certContainer = document.getElementById('certViewerContainer');
+    if (certContainer) {
+        // Disable Right-Click
+        certContainer.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+        // Disable Dragging the image to desktop
+        certContainer.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+        });
+    }
+
     // AJAX Form Submission
     const contactForm = document.getElementById('ajax-contact-form');
     const statusMsg = document.getElementById('form-status-msg');
