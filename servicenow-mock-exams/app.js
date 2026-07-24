@@ -28,7 +28,6 @@ function selectExam(examId) {
     
     document.getElementById('auth-title').innerText = "Unlock " + title;
     document.getElementById('requested-exam-name').value = title;
-    document.getElementById('request-next-url').value = window.location.href;
     
     document.getElementById('landing-view').style.display = 'none';
     document.getElementById('auth-view').style.display = 'block';
