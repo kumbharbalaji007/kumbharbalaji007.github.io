@@ -14,7 +14,8 @@ window.openCert = function(certUrl) {
     } else {
         // Assume PDF or other embedded format
         const iframe = document.createElement('iframe');
-        iframe.src = certUrl + "#toolbar=0&navpanes=0&scrollbar=0"; // Try to disable download/print toolbars natively
+        // Encode the URL to handle spaces properly and use view=Fit so it scales to fit the entire page within the iframe without any scrolling
+        iframe.src = encodeURI(certUrl) + "#view=Fit&toolbar=0&navpanes=0&scrollbar=0"; // Try to disable download/print toolbars natively
         container.appendChild(iframe);
     }
     

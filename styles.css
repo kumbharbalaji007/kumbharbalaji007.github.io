@@ -63,11 +63,11 @@ a { text-decoration: none; color: inherit; }
 }
 .modal-content {
     position: relative;
-    margin: 5% auto;
+    margin: 2% auto;
     padding: 20px;
-    width: 80%;
-    max-width: 1000px;
-    height: 80vh;
+    width: 95%;
+    max-width: 1200px;
+    height: 90vh;
     background: #111827;
     border: 1px solid var(--helix-accent-blue);
     border-radius: 15px;
