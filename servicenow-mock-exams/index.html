@@ -50,6 +50,9 @@
                     <input type="password" id="access-code" placeholder="Enter Access Code">
                 </div>
                 <div id="auth-error" class="error-msg" style="display: none;">Invalid access code. Please try again.</div>
+                <div id="auth-success" class="success-msg" style="display: none; margin-bottom: 20px;">
+                    Your request has been sent! Please check your email and enter the received code below.
+                </div>
                 <div class="btn-group">
                     <button class="btn-secondary" onclick="showLanding()">Cancel</button>
                     <button class="btn-primary" onclick="unlockExam()">Unlock</button>
@@ -82,9 +85,6 @@
                         <button type="submit" class="btn-primary" id="req-submit-btn">Request Code</button>
                     </div>
                 </form>
-                <div id="request-success" class="success-msg" style="display: none; margin-top: 20px;">
-                    Your request has been sent! You will receive the code via email shortly.
-                </div>
             </div>
         </div>
 

@@ -11,7 +11,7 @@ function showLanding() {
     document.getElementById('exam-view').style.display = 'none';
     document.getElementById('access-code').value = '';
     document.getElementById('auth-error').style.display = 'none';
-    document.getElementById('request-success').style.display = 'none';
+    document.getElementById('auth-success').style.display = 'none';
     document.getElementById('req-submit-btn').style.display = 'block';
     
     if (timerInterval) clearInterval(timerInterval);
@@ -28,6 +28,7 @@ function selectExam(examId) {
     
     document.getElementById('auth-title').innerText = "Unlock " + title;
     document.getElementById('requested-exam-name').value = title;
+    document.getElementById('auth-success').style.display = 'none';
     
     document.getElementById('landing-view').style.display = 'none';
     document.getElementById('auth-view').style.display = 'block';
@@ -60,7 +61,10 @@ function submitRequestCode(event) {
         body: formData
     })
     .then(response => {
-        document.getElementById('request-success').style.display = 'block';
+        document.getElementById('req-submit-btn').style.display = 'block';
+        document.getElementById('request-view').style.display = 'none';
+        document.getElementById('auth-view').style.display = 'block';
+        document.getElementById('auth-success').style.display = 'block';
     })
     .catch(error => {
         console.error('Error submitting request:', error);
