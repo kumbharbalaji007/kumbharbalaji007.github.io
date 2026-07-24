@@ -1,5 +1,6 @@
 let currentExamId = null;
 let currentExamData = [];
+let timerInterval = null;
 
 // Navigation Functions
 function showLanding() {
@@ -10,6 +11,10 @@ function showLanding() {
     document.getElementById('exam-view').style.display = 'none';
     document.getElementById('access-code').value = '';
     document.getElementById('auth-error').style.display = 'none';
+    document.getElementById('request-success').style.display = 'none';
+    document.getElementById('req-submit-btn').style.display = 'block';
+    
+    if (timerInterval) clearInterval(timerInterval);
     currentExamId = null;
     currentExamData = [];
 }
@@ -32,6 +37,36 @@ function selectExam(examId) {
 function showRequestView() {
     document.getElementById('auth-view').style.display = 'none';
     document.getElementById('request-view').style.display = 'block';
+}
+
+function submitRequestCode(event) {
+    event.preventDefault();
+    const name = document.getElementById('req-name').value;
+    const email = document.getElementById('req-email').value;
+    const phone = document.getElementById('req-phone').value;
+    
+    // Save to local storage for auto-fill later
+    localStorage.setItem('candidate_name', name);
+    localStorage.setItem('candidate_email', email);
+    localStorage.setItem('candidate_phone', phone);
+
+    const formData = new FormData(event.target);
+    formData.append('_captcha', 'false');
+    formData.append('_subject', `Mock Exam Access Code Request: ${name}`);
+
+    document.getElementById('req-submit-btn').style.display = 'none';
+
+    fetch('https://formsubmit.co/ajax/kumbharbalaji007@gmail.com', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        document.getElementById('request-success').style.display = 'block';
+    })
+    .catch(error => {
+        console.error('Error submitting request:', error);
+        document.getElementById('req-submit-btn').style.display = 'block';
+    });
 }
 
 // Security & Decryption Functions
@@ -97,6 +132,12 @@ let currentUser = { name: '', email: '', phone: '', tryNumber: 1 };
 
 function showRegisterView() {
     document.getElementById('auth-view').style.display = 'none';
+    
+    // Auto-fill if we have them from the request form
+    if (localStorage.getItem('candidate_name')) document.getElementById('reg-name').value = localStorage.getItem('candidate_name');
+    if (localStorage.getItem('candidate_email')) document.getElementById('reg-email').value = localStorage.getItem('candidate_email');
+    if (localStorage.getItem('candidate_phone')) document.getElementById('reg-phone').value = localStorage.getItem('candidate_phone');
+    
     document.getElementById('register-view').style.display = 'block';
 }
 
@@ -115,6 +156,21 @@ function startExam(event) {
         currentUser.tryNumber = 1;
     }
     localStorage.setItem(storageKey, currentUser.tryNumber);
+    
+    // Banner Population
+    document.getElementById('banner-name').innerText = currentUser.name;
+    document.getElementById('banner-try').innerText = `Try ${currentUser.tryNumber}`;
+    document.getElementById('banner-status').innerText = 'In Progress';
+    
+    // Previous Score logic
+    const prevScoreKey = `exam_score_${currentUser.email}_${currentExamId}`;
+    let prevScore = localStorage.getItem(prevScoreKey);
+    if (prevScore) {
+        document.getElementById('banner-prev-score-container').style.display = 'inline-block';
+        document.getElementById('banner-prev-score').innerText = prevScore;
+    } else {
+        document.getElementById('banner-prev-score-container').style.display = 'none';
+    }
 
     document.getElementById('register-view').style.display = 'none';
     renderExam();
@@ -162,11 +218,58 @@ function renderExam() {
         
         container.innerHTML += html;
     });
+    
+    startTimer();
+}
+
+function startTimer() {
+    let duration = 90 * 60; // 90 minutes in seconds
+    const timerDisplay = document.getElementById('exam-timer');
+    
+    timerInterval = setInterval(() => {
+        let hours = Math.floor(duration / 3600);
+        let minutes = Math.floor((duration % 3600) / 60);
+        let seconds = duration % 60;
+        
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        
+        timerDisplay.textContent = hours + ":" + minutes + ":" + seconds;
+        
+        if (--duration < 0) {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "00:00:00";
+            alert("Time is up! Your exam is being automatically submitted.");
+            submitExam(true); // force submit
+        }
+    }, 1000);
 }
 
 // Exam Scoring
-document.getElementById('submit-btn').addEventListener('click', () => {
+document.getElementById('submit-btn').addEventListener('click', () => submitExam(false));
+
+function submitExam(forceSubmit = false) {
     let score = 0;
+    let allAnswered = true;
+    
+    // Validation check first
+    if (!forceSubmit) {
+        currentExamData.forEach((q, index) => {
+            const inputs = document.querySelectorAll(`input[name="q${index}"]:checked`);
+            if (inputs.length === 0) allAnswered = false;
+        });
+        
+        if (!allAnswered) {
+            document.getElementById('validation-error').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return; // stop submission
+        }
+    }
+    
+    document.getElementById('validation-error').style.display = 'none';
+    if (timerInterval) clearInterval(timerInterval);
+    document.getElementById('banner-status').innerText = 'Completed';
     
     currentExamData.forEach((q, index) => {
         const inputs = document.querySelectorAll(`input[name="q${index}"]:checked`);
@@ -250,7 +353,11 @@ document.getElementById('submit-btn').addEventListener('click', () => {
 
     // Scroll to the top to see the score
     window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+    
+    // Save score to local storage for next time
+    const prevScoreKey = `exam_score_${currentUser.email}_${currentExamId}`;
+    localStorage.setItem(prevScoreKey, `${percentage}% (${score}/${currentExamData.length})`);
+}
 
 // Handle Enter key for auth
 document.getElementById('access-code').addEventListener('keypress', function (e) {

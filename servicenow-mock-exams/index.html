@@ -65,10 +65,7 @@
             <div class="auth-card">
                 <h2>Request Access Code</h2>
                 <p>Fill out your details to receive an access code via email.</p>
-                <form id="request-code-form" action="https://formsubmit.co/kumbharbalaji007@gmail.com" method="POST">
-                    <input type="hidden" name="_subject" value="Mock Exam Access Code Request">
-                    <input type="hidden" name="_next" id="request-next-url" value="">
-                    <input type="hidden" name="_captcha" value="false">
+                <form id="request-code-form" onsubmit="submitRequestCode(event)">
                     <input type="hidden" name="Requested_Exam" id="requested-exam-name" value="">
                     
                     <div class="form-group">
@@ -82,9 +79,12 @@
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn-secondary" onclick="showLanding()">Cancel</button>
-                        <button type="submit" class="btn-primary">Request Code</button>
+                        <button type="submit" class="btn-primary" id="req-submit-btn">Request Code</button>
                     </div>
                 </form>
+                <div id="request-success" class="success-msg" style="display: none; margin-top: 20px;">
+                    Your request has been sent! You will receive the code via email shortly.
+                </div>
             </div>
         </div>
 
@@ -115,7 +115,22 @@
         <div id="exam-view" style="display: none;">
             <div class="exam-header">
                 <h2 id="exam-title">Mock Paper</h2>
+                <div class="timer-container" id="exam-timer">01:30:00</div>
                 <button class="btn-secondary" onclick="showLanding()">Exit Exam</button>
+            </div>
+            
+            <!-- Candidate Dashboard Banner -->
+            <div class="candidate-banner">
+                <div class="banner-item"><strong>Candidate:</strong> <span id="banner-name"></span></div>
+                <div class="banner-item"><strong>Status:</strong> <span id="banner-status">In Progress</span></div>
+                <div class="banner-item"><strong>Try Number:</strong> <span id="banner-try"></span></div>
+                <div class="banner-item" id="banner-prev-score-container" style="display: none;">
+                    <strong>Previous Score:</strong> <span id="banner-prev-score"></span>
+                </div>
+            </div>
+            
+            <div id="validation-error" class="error-msg" style="display: none; margin-bottom: 20px;">
+                Please answer all questions before submitting.
             </div>
             
             <div id="result-container" class="result-container" style="display: none;"></div>
