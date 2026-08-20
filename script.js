@@ -50,10 +50,22 @@ window.openArticle = function(articleId) {
     if (content) {
         container.innerHTML = content.innerHTML;
         modal.style.display = 'block';
+        // Update URL hash for sharing
+        window.history.pushState(null, null, '#' + articleId);
     }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Check if URL has an article hash on load
+    if (window.location.hash && window.location.hash.startsWith('#article-content')) {
+        const articleId = window.location.hash.substring(1);
+        setTimeout(() => {
+            if (document.getElementById(articleId)) {
+                window.openArticle(articleId);
+            }
+        }, 100);
+    }
+
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -129,6 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
             articleModal.style.display = "none";
             document.getElementById('certViewerContainer').innerHTML = ''; 
             document.getElementById('articleViewerContainer').innerHTML = ''; 
+            // Clear URL hash when closing article
+            if (window.location.hash.startsWith('#article-content')) {
+                window.history.pushState(null, null, window.location.pathname + window.location.search);
+            }
         }
     });
 
@@ -141,6 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.target == articleModal) {
             articleModal.style.display = "none";
             document.getElementById('articleViewerContainer').innerHTML = '';
+            // Clear URL hash when closing article
+            if (window.location.hash.startsWith('#article-content')) {
+                window.history.pushState(null, null, window.location.pathname + window.location.search);
+            }
         }
     }
 

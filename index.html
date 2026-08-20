@@ -204,21 +204,19 @@ tctl update tenant-service 123456789 -i f2858c7f-6b3b-4bce-8e71-78cc67d100e5 -f 
         <h3>Understanding the AR Server Cache</h3>
         <p>BMC Helix generates ticket IDs (e.g., INC0000500000) using specific generator forms. The AR System Server pre-fetches a block of these IDs (typically 100) into its RAM for performance. To successfully change the starting number, you must scale down the AR server pods before updating the Oracle database; otherwise, the running server will overwrite your database changes with its cached memory.</p>
         
-        <h3>Step 1: Identify the Correct Schema IDs</h3>
-        <p>Due to form overlays or multiple environments sharing a database, it is safest to update by schemaId rather than form name. Run this query in Oracle to find the active Schema IDs for your generator forms:</p>
+        <h3>Step 1: Verify the Target Forms</h3>
+        <p>You can update the sequence directly by form name. Ensure you target both the main transaction form (e.g., <code>HPD:Help Desk</code>) and its corresponding generator form (e.g., <code>HPD:CFG TicketNumGenerator</code>). You can verify their current sequences with this query:</p>
         <div style="position: relative; margin-bottom: 1.5rem;">
             <button onclick="copyCode(this, 'code-block-1')" class="btn btn-primary" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 0.8rem; z-index: 10;"><i class="fa-regular fa-copy"></i> Copy</button>
             <pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 0;"><code id="code-block-1">SELECT schemaId, name, nextId FROM arschema 
 WHERE name IN (
-    'HPD:CFG Ticket Num Generator',   -- Incident
-    'CHG:CFG Ticket Num Generator',   -- Change
-    'TMS:Task',                       -- Task
-    'SRM:CFG TicketNumGenerator',     -- Service Request
-    'PBM:CFG PI TicketNumGenerator',  -- Problem Investigation
-    'PBM:CFG KE TicketNumGenerator'   -- Known Error
+    'HPD:Help Desk', 'HPD:CFG TicketNumGenerator',
+    'CHG:Infrastructure Change', 'CHG:CFG Ticket Num Generator',
+    'WOI:WorkOrder', 'WOI:CFG TicketNumGenerator',
+    'SRM:Request', 'SRM:CFG TicketNumGenerator',
+    'SB:ServiceRequestStub', 'myit-sb:Order'
 );</code></pre>
         </div>
-        <p>Note down the exact schemaId for each module you intend to update.</p>
         
         <h3>Step 2: Scale Down the AR Server Pods</h3>
         <p>To clear the memory cache and release database locks, scale down your AR System workload. For a compact Kubernetes deployment, bring down the FTS pod:</p>
@@ -229,18 +227,28 @@ WHERE name IN (
         <p>Ensure the pod is fully terminated before proceeding.</p>
 
         <h3>Step 3: Execute the Oracle Database Updates</h3>
-        <p>Log into your Oracle database and run the UPDATE commands using the schemaIds retrieved in Step 1. You must issue a COMMIT statement in Oracle.</p>
+        <p>Log into your Oracle database and execute the following UPDATE commands. Make sure you issue a COMMIT statement.</p>
         <div style="position: relative; margin-bottom: 1.5rem;">
             <button onclick="copyCode(this, 'code-block-3')" class="btn btn-primary" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 0.8rem; z-index: 10;"><i class="fa-regular fa-copy"></i> Copy</button>
-            <pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 0;"><code id="code-block-3">-- Replace [ID] with your specific schemaId
--- Replace 100000 with your desired starting sequence
+            <pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 0;"><code id="code-block-3">-- Service Request Management
+UPDATE arschema SET nextId = 50000 WHERE name = 'SRM:Request';
+UPDATE arschema SET nextId = 50000 WHERE name = 'SRM:CFG TicketNumGenerator';
 
-UPDATE arschema SET nextId = 100000 WHERE schemaId = [ID_for_Incident];
-UPDATE arschema SET nextId = 100000 WHERE schemaId = [ID_for_Change];
-UPDATE arschema SET nextId = 100000 WHERE schemaId = [ID_for_Task];
-UPDATE arschema SET nextId = 100000 WHERE schemaId = [ID_for_SRM];
-UPDATE arschema SET nextId = 100000 WHERE schemaId = [ID_for_Problem];
-UPDATE arschema SET nextId = 100000 WHERE schemaId = [ID_for_Known_Error];
+-- Incident Management
+UPDATE arschema SET nextId = 50000 WHERE name = 'HPD:Help Desk';
+UPDATE arschema SET nextId = 50000 WHERE name = 'HPD:CFG TicketNumGenerator';
+
+-- Work Order Management
+UPDATE arschema SET nextId = 50000 WHERE name = 'WOI:WorkOrder';
+UPDATE arschema SET nextId = 50000 WHERE name = 'WOI:CFG TicketNumGenerator';
+
+-- Change Management
+UPDATE arschema SET nextId = 50000 WHERE name = 'CHG:Infrastructure Change';
+UPDATE arschema SET nextId = 50000 WHERE name = 'CHG:CFG Ticket Num Generator';
+
+-- DWPC Requests (Digital Workplace Catalog)
+UPDATE arschema SET nextId = 50000 WHERE name = 'SB:ServiceRequestStub';
+UPDATE arschema SET nextId = 50000 WHERE name = 'myit-sb:Order'; -- Order ID
 
 COMMIT;</code></pre>
         </div>
