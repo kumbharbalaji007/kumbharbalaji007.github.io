@@ -22,6 +22,26 @@ window.openCert = function(certUrl) {
     modal.style.display = 'block';
 };
 
+window.copyCode = function(button, elementId) {
+    const codeBlock = document.getElementById(elementId);
+    if (!codeBlock) return;
+    
+    const textToCopy = codeBlock.innerText || codeBlock.textContent;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+        button.classList.add('copied');
+        
+        // Reset after 2 seconds
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.classList.remove('copied');
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+};
+
 window.openArticle = function(articleId) {
     const modal = document.getElementById('articleModal');
     const container = document.getElementById('articleViewerContainer');

@@ -196,6 +196,66 @@ tctl update tenant-service 123456789 -i f2858c7f-6b3b-4bce-8e71-78cc67d100e5 -f 
         <p>Once the tenant services are updated, the OOTB dashboards will be fully restored and successfully connected to the reporting database.</p>
     </div>
 
+    <div id="article-content-6" style="display:none;">
+        <h2>Guide: Resetting Ticket Sequence Numbers in BMC Helix ITSM</h2>
+        <p><strong>Author:</strong> Balaji</p>
+        <p><strong>Target Environment:</strong> BMC Helix ITSM 25.4 (On-Premises), Kubernetes Compact Deployment, Oracle Database</p>
+        
+        <h3>Understanding the AR Server Cache</h3>
+        <p>BMC Helix generates ticket IDs (e.g., INC0000500000) using specific generator forms. The AR System Server pre-fetches a block of these IDs (typically 100) into its RAM for performance. To successfully change the starting number, you must scale down the AR server pods before updating the Oracle database; otherwise, the running server will overwrite your database changes with its cached memory.</p>
+        
+        <h3>Step 1: Identify the Correct Schema IDs</h3>
+        <p>Due to form overlays or multiple environments sharing a database, it is safest to update by schemaId rather than form name. Run this query in Oracle to find the active Schema IDs for your generator forms:</p>
+        <div style="position: relative; margin-bottom: 1.5rem;">
+            <button onclick="copyCode(this, 'code-block-1')" class="btn btn-primary" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 0.8rem; z-index: 10;"><i class="fa-regular fa-copy"></i> Copy</button>
+            <pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 0;"><code id="code-block-1">SELECT schemaId, name, nextId FROM arschema 
+WHERE name IN (
+    'HPD:CFG Ticket Num Generator',   -- Incident
+    'CHG:CFG Ticket Num Generator',   -- Change
+    'TMS:Task',                       -- Task
+    'SRM:CFG TicketNumGenerator',     -- Service Request
+    'PBM:CFG PI TicketNumGenerator',  -- Problem Investigation
+    'PBM:CFG KE TicketNumGenerator'   -- Known Error
+);</code></pre>
+        </div>
+        <p>Note down the exact schemaId for each module you intend to update.</p>
+        
+        <h3>Step 2: Scale Down the AR Server Pods</h3>
+        <p>To clear the memory cache and release database locks, scale down your AR System workload. For a compact Kubernetes deployment, bring down the FTS pod:</p>
+        <div style="position: relative; margin-bottom: 1.5rem;">
+            <button onclick="copyCode(this, 'code-block-2')" class="btn btn-primary" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 0.8rem; z-index: 10;"><i class="fa-regular fa-copy"></i> Copy</button>
+            <pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 0;"><code id="code-block-2">kubectl scale statefulset platform-fts --replicas=0 -n &lt;your-namespace&gt;</code></pre>
+        </div>
+        <p>Ensure the pod is fully terminated before proceeding.</p>
+
+        <h3>Step 3: Execute the Oracle Database Updates</h3>
+        <p>Log into your Oracle database and run the UPDATE commands using the schemaIds retrieved in Step 1. You must issue a COMMIT statement in Oracle.</p>
+        <div style="position: relative; margin-bottom: 1.5rem;">
+            <button onclick="copyCode(this, 'code-block-3')" class="btn btn-primary" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 0.8rem; z-index: 10;"><i class="fa-regular fa-copy"></i> Copy</button>
+            <pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 0;"><code id="code-block-3">-- Replace [ID] with your specific schemaId
+-- Replace 100000 with your desired starting sequence
+
+UPDATE arschema SET nextId = 100000 WHERE schemaId = [ID_for_Incident];
+UPDATE arschema SET nextId = 100000 WHERE schemaId = [ID_for_Change];
+UPDATE arschema SET nextId = 100000 WHERE schemaId = [ID_for_Task];
+UPDATE arschema SET nextId = 100000 WHERE schemaId = [ID_for_SRM];
+UPDATE arschema SET nextId = 100000 WHERE schemaId = [ID_for_Problem];
+UPDATE arschema SET nextId = 100000 WHERE schemaId = [ID_for_Known_Error];
+
+COMMIT;</code></pre>
+        </div>
+
+        <h3>Step 4: Scale Up and Verify</h3>
+        <p>Bring the AR System server back online. Upon initialization, it will fetch the new sequence into its clean cache.</p>
+        <div style="position: relative; margin-bottom: 1.5rem;">
+            <button onclick="copyCode(this, 'code-block-4')" class="btn btn-primary" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 0.8rem; z-index: 10;"><i class="fa-regular fa-copy"></i> Copy</button>
+            <pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 0;"><code id="code-block-4">kubectl scale statefulset platform-fts --replicas=1 -n &lt;your-namespace&gt;</code></pre>
+        </div>
+        <p>Once the Mid-Tier is accessible, create a test ticket for each module to verify the new ID format (e.g., PBI000000100000).</p>
+        
+        <p><em>Would you like to include a section in this article detailing how to modify the prefix length (e.g., standardizing to a 13-character string instead of 15) using BMC Developer Studio? Connect with me to learn more!</em></p>
+    </div>
+
     <main class="page-container">
 
         <!-- ==========================================
@@ -590,6 +650,14 @@ tctl update tenant-service 123456789 -i f2858c7f-6b3b-4bce-8e71-78cc67d100e5 -f 
                         <h3>Restoring ITSM Dashboard Connectivity & OOTB Dashboards</h3>
                         <p>A technical guide on resolving post-installation connection issues between the reporting dashboard and the ITSM Database using PostgreSQL and the TCTL utility.</p>
                         <a href="#" class="read-more" onclick="openArticle('article-content-5'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    
+                    <!-- Article 6 -->
+                    <div class="article-card glass-card" data-category="bmc k8s">
+                        <div class="article-tag">BMC Helix / K8s</div>
+                        <h3>Resetting Ticket Sequence Numbers in BMC Helix ITSM</h3>
+                        <p>A guide on how to safely reset ticket sequence numbers by clearing the AR Server cache, scaling down pods, and updating the Oracle Database.</p>
+                        <a href="#" class="read-more" onclick="openArticle('article-content-6'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
