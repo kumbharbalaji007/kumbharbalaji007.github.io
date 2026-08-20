@@ -116,19 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(style);
 
-    // Mouse move effect for glows
-    document.addEventListener('mousemove', (e) => {
-        const x = e.clientX / window.innerWidth;
-        const y = e.clientY / window.innerHeight;
-
-        const glows = document.querySelectorAll('.glow');
-        glows.forEach((glow, index) => {
-            const speed = (index + 1) * 20;
-            const xOffset = (x - 0.5) * speed;
-            const yOffset = (y - 0.5) * speed;
-            glow.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
-        });
-    });
+    // Mouse move effect removed to prevent flickering conflict with CSS float animation
 
     // Modal Close Logic
     const certModal = document.getElementById('certModal');
