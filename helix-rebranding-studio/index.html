@@ -1,0 +1,1136 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMC Helix Rebranding Studio | Smart IT UC & PWA Generator</title>
+  <!-- Tailwind CSS: Works both on GitHub Pages and locally -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (!window.tailwind) {
+      document.write('<script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"><\/script>');
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    .color-input-wrapper input[type="color"] {
+      -webkit-appearance: none;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .color-input-wrapper input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    .color-input-wrapper input[type="color"]::-webkit-color-swatch { border: 1px solid rgba(0,0,0,0.15); border-radius: 6px; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen">
+
+  <!-- TOP HEADER -->
+  <header class="bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-lg bg-teal-500/20 border border-teal-500/40 flex items-center justify-center text-teal-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-white flex items-center gap-2">
+            BMC Helix Rebranding Studio
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-teal-950 border border-teal-500/40 text-teal-300">v25.4 / 21.x Ready</span>
+          </h1>
+          <p class="text-xs text-slate-400">Client-Side Generator for Smart IT Universal Client (UC) &amp; PWA Screens</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2.5">
+        <button onclick="loadGenericPreset()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-teal-300 border border-teal-500/30 transition flex items-center gap-1.5 shadow-sm">
+          <span>Reset: Balaji Enterprises</span>
+        </button>
+        <button onclick="downloadAllBundle()" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white transition flex items-center gap-1.5 shadow-md">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+          <span>Download All-In-One (.zip)</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- LEFT COLUMN: CONTROLS & ASSETS (5 cols) -->
+      <div class="lg:col-span-5 space-y-6">
+
+        <!-- 1. IDENTIFIER & PRESETS -->
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-teal-500"></span> 1. Organization &amp; Tenant
+            </h2>
+            <span class="text-xs text-slate-400">Target Settings</span>
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Organization / Brand Name</label>
+              <input type="text" id="orgName" value="Balaji Enterprises" oninput="updateLivePreview()" 
+                     class="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-slate-50 font-medium">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Smart IT Tenant ID</label>
+              <input type="text" id="tenantId" value="000000000000001" oninput="updateLivePreview()"
+                     class="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-slate-50 font-mono text-xs">
+              <span class="text-[11px] text-slate-400">Standard single-tenant ID in Smart IT is 000000000000001</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. BRAND COLOR PALETTE -->
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-teal-500"></span> 2. Brand Colors
+            </h2>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="loadGenericPreset()" class="text-[11px] px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-semibold hover:bg-slate-200">Balaji</button>
+              <button onclick="loadPotteryPreset()" class="text-[11px] px-2 py-0.5 rounded bg-amber-50 text-amber-800 font-semibold hover:bg-amber-100">Pottery Solutions</button>
+              <button onclick="loadEnterpriseBlue()" class="text-[11px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold hover:bg-blue-100">Enterprise Blue</button>
+              <button onclick="loadEmeraldTech()" class="text-[11px] px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold hover:bg-emerald-100">Emerald Tech</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <!-- Primary Dark Color -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Primary Dominant (Header &amp; Primary Btn)</label>
+              <div class="flex items-center gap-2 color-input-wrapper">
+                <input type="color" id="primaryColorPicker" value="#0F172A" oninput="syncColor('primary', this.value)">
+                <input type="text" id="primaryColorText" value="#0F172A" oninput="syncColor('primary', this.value)"
+                       class="flex-1 px-2.5 py-1.5 text-xs font-mono uppercase rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
+              </div>
+            </div>
+
+            <!-- Dark Accent / Hover -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Deep Accent (Menu Open &amp; Hover)</label>
+              <div class="flex items-center gap-2 color-input-wrapper">
+                <input type="color" id="darkAccentColorPicker" value="#020617" oninput="syncColor('darkAccent', this.value)">
+                <input type="text" id="darkAccentColorText" value="#020617" oninput="syncColor('darkAccent', this.value)"
+                       class="flex-1 px-2.5 py-1.5 text-xs font-mono uppercase rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
+              </div>
+            </div>
+
+            <!-- Fadeline / Border Accent -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Fadeline &amp; Border Accent</label>
+              <div class="flex items-center gap-2 color-input-wrapper">
+                <input type="color" id="fadelineColorPicker" value="#0EA5E9" oninput="syncColor('fadeline', this.value)">
+                <input type="text" id="fadelineColorText" value="#0EA5E9" oninput="syncColor('fadeline', this.value)"
+                       class="flex-1 px-2.5 py-1.5 text-xs font-mono uppercase rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
+              </div>
+            </div>
+
+            <!-- Green Turquoise / Mint Highlight -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Interactive Highlight Accent</label>
+              <div class="flex items-center gap-2 color-input-wrapper">
+                <input type="color" id="highlightColorPicker" value="#10B981" oninput="syncColor('highlight', this.value)">
+                <input type="text" id="highlightColorText" value="#10B981" oninput="syncColor('highlight', this.value)"
+                       class="flex-1 px-2.5 py-1.5 text-xs font-mono uppercase rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
+              </div>
+            </div>
+
+            <!-- Secondary Button Surface -->
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Secondary Button Surface Tint</label>
+              <div class="flex items-center gap-2 color-input-wrapper">
+                <input type="color" id="secondaryBgPicker" value="#F8FAFC" oninput="syncColor('secondaryBg', this.value)">
+                <input type="text" id="secondaryBgText" value="#F8FAFC" oninput="syncColor('secondaryBg', this.value)"
+                       class="flex-1 px-2.5 py-1.5 text-xs font-mono uppercase rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. BRAND ASSETS UPLOAD -->
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-teal-500"></span> 3. Brand Assets (Images)
+            </h2>
+            <span class="text-xs text-emerald-600 font-semibold" id="assetStatus">Corporate Brand Active</span>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Header Logo Upload -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Company Logo (.svg or .png)</label>
+              <div class="flex items-center gap-3">
+                <div id="logoPreviewContainer" class="w-36 h-10 rounded border border-slate-300 flex items-center justify-center p-1 bg-slate-900 overflow-hidden">
+                  <img id="logoPreviewImg" class="max-h-full max-w-full object-contain">
+                </div>
+                <div class="flex-1">
+                  <label class="cursor-pointer inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition">
+                    <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    <span>Choose Logo...</span>
+                    <input type="file" id="logoFileInput" accept=".svg,.png,.jpg,.jpeg" onchange="handleLogoUpload(event)" class="hidden">
+                  </label>
+                  <p class="text-[11px] text-slate-400 mt-1" id="logoFilename">logo.svg (Vector SVG)</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Favicon Upload -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Favicon (.ico or .png)</label>
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded border border-slate-300 flex items-center justify-center p-1 bg-white shadow-sm">
+                  <img id="faviconPreviewImg" class="w-6 h-6 object-contain">
+                </div>
+                <div class="flex-1">
+                  <label class="cursor-pointer inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition">
+                    <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    <span>Choose Favicon...</span>
+                    <input type="file" id="favFileInput" accept=".ico,.png" onchange="handleFavUpload(event)" class="hidden">
+                  </label>
+                  <p class="text-[11px] text-slate-400 mt-1" id="favFilename">favicon.ico (Multi-size)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: INTERACTIVE PREVIEW & GENERATOR (7 cols) -->
+      <div class="lg:col-span-7 space-y-6">
+
+        <!-- PREVIEW BOX -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <!-- TABS -->
+          <div class="bg-slate-100 border-b border-slate-200 px-4 py-2.5 flex justify-between items-center">
+            <div class="flex space-x-2">
+              <button onclick="switchTab('smartit')" id="tabBtnSmartIt" class="px-3 py-1 text-xs font-bold rounded-md bg-white text-slate-800 shadow-sm border border-slate-200">
+                Smart IT Classic UC Preview
+              </button>
+              <button onclick="switchTab('pwa')" id="tabBtnPwa" class="px-3 py-1 text-xs font-bold rounded-md text-slate-500 hover:text-slate-800">
+                PWA Screens Preview
+              </button>
+              <button onclick="switchTab('code')" id="tabBtnCode" class="px-3 py-1 text-xs font-bold rounded-md text-slate-500 hover:text-slate-800">
+                Generated CSS View
+              </button>
+            </div>
+            <span class="text-xs text-slate-400">Live WYSIWYG</span>
+          </div>
+
+          <!-- TAB CONTENT 1: SMART IT PREVIEW -->
+          <div id="tabContentSmartIt" class="p-6 space-y-6">
+            <div class="text-xs text-slate-500 mb-2">Simulated Smart IT Navigation Bar &amp; Dropdown Sub-menu:</div>
+
+            <!-- SMART IT SIMULATED BAR -->
+            <div class="rounded-lg overflow-hidden shadow-lg border border-slate-300">
+              <!-- Top bar -->
+              <div id="simHeader" class="px-4 py-2.5 flex items-center justify-between transition-colors duration-200">
+                <!-- Left: Logo & Menus -->
+                <div class="flex items-center space-x-6">
+                  <div class="h-9 flex items-center">
+                    <img id="simLogo" class="max-h-8 max-w-[210px] object-contain">
+                  </div>
+                  <!-- Nav items -->
+                  <div class="flex items-center space-x-1 text-xs font-medium text-white">
+                    <span class="px-3 py-1.5 rounded hover:bg-black/20 cursor-pointer">Dashboard</span>
+                    <span class="px-3 py-1.5 rounded hover:bg-black/20 cursor-pointer">Updates</span>
+                    <!-- Dropdown item open -->
+                    <div class="relative">
+                      <div id="simNavOpen" class="px-3 py-1.5 rounded flex items-center gap-1 cursor-pointer font-bold">
+                        <span>Console</span>
+                        <span class="text-[9px]">â–¼</span>
+                      </div>
+
+                      <!-- Sub-menu dropdown -->
+                      <div id="simSubmenu" class="absolute top-full left-0 mt-1 w-48 rounded shadow-2xl p-1 z-30 space-y-0.5 border">
+                        <div class="px-3 py-2 text-xs flex items-center gap-2 cursor-pointer rounded hover:bg-black/20" id="simSubItem1">
+                          <span class="text-xs" id="simSubIcon1">â—</span>
+                          <span id="simSubText1">Ticket Console</span>
+                        </div>
+                        <div class="px-3 py-2 text-xs flex items-center gap-2 cursor-pointer rounded hover:bg-black/20" id="simSubItem2">
+                          <span class="text-xs" id="simSubIcon2">â—</span>
+                          <span id="simSubText2">Asset Console</span>
+                        </div>
+                        <div class="px-3 py-2 text-xs flex items-center gap-2 cursor-pointer rounded hover:bg-black/20" id="simSubItem3">
+                          <span class="text-xs" id="simSubIcon3">â—</span>
+                          <span id="simSubText3">Knowledge Console</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right icons -->
+                <div class="flex items-center space-x-3 text-white text-xs font-semibold">
+                  <span class="cursor-pointer hover:opacity-80">Search</span>
+                  <span class="cursor-pointer hover:opacity-80">History</span>
+                  <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold">U</div>
+                </div>
+              </div>
+
+              <!-- Fadeline -->
+              <div id="simFadeline" class="h-1.5 w-full"></div>
+            </div>
+
+            <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 text-xs space-y-1">
+              <span class="font-bold text-slate-700">Sub-Menu Contrast Standard:</span>
+              <p class="text-slate-600">Sub-menu labels (<span class="font-mono text-slate-800">Ticket Console</span>, etc.) are forced to <strong class="text-emerald-700">#FFFFFF (White)</strong> with high WCAG contrast, and highlight in <strong class="text-teal-700">Accent Color</strong> on hover.</p>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT 2: PWA SCREENS PREVIEW -->
+          <div id="tabContentPwa" class="p-6 space-y-6 hidden">
+            <div class="text-xs text-slate-500 mb-2">Simulated PWA Form Actions &amp; Toolbar:</div>
+
+            <div class="border border-slate-200 rounded-lg p-5 bg-white space-y-5 shadow-sm">
+              <!-- Stepper Header -->
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center space-x-4 text-xs font-semibold">
+                  <span id="pwaStep1" class="flex items-center gap-1.5 cursor-pointer">
+                    <span class="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px]" id="pwaStepBadge1">1</span>
+                    <span id="pwaStepText1">General Information</span>
+                  </span>
+                  <span class="text-slate-300">â€º</span>
+                  <span id="pwaStep2" class="flex items-center gap-1.5 text-slate-400">
+                    <span class="w-5 h-5 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px]">2</span>
+                    <span>Categorization</span>
+                  </span>
+                </div>
+                <!-- Toolbar icons -->
+                <div class="flex items-center space-x-3 text-xs font-bold" id="pwaToolbarIcons">
+                  <span class="cursor-pointer px-2 py-1 bg-slate-100 rounded text-slate-700 hover:bg-slate-200">Assign</span>
+                  <span class="cursor-pointer px-2 py-1 bg-slate-100 rounded text-slate-700 hover:bg-slate-200">Email</span>
+                  <span class="cursor-pointer px-2 py-1 bg-slate-100 rounded text-slate-700 hover:bg-slate-200">Print</span>
+                </div>
+              </div>
+
+              <!-- Button actions -->
+              <div class="space-y-3">
+                <div class="text-xs font-semibold text-slate-600">Action Buttons:</div>
+                <div class="flex flex-wrap items-center gap-3">
+                  <!-- Primary Button -->
+                  <button id="pwaPrimaryBtn" class="px-4 py-2 text-xs font-semibold rounded shadow-sm transition">
+                    Save Changes (Primary)
+                  </button>
+
+                  <!-- Secondary Button -->
+                  <button id="pwaSecondaryBtn" class="px-4 py-2 text-xs font-semibold rounded border shadow-sm transition">
+                    Cancel (Secondary)
+                  </button>
+
+                  <!-- Attach File Button -->
+                  <button id="pwaAttachBtn" class="px-3.5 py-2 text-xs font-semibold rounded border shadow-sm transition flex items-center gap-1.5">
+                    <span>Attach Files</span>
+                  </button>
+
+                  <!-- Hyperlink -->
+                  <a href="#" id="pwaLink" class="text-xs font-semibold transition hover:underline">
+                    View audit trail &rsaquo;
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT 3: CODE INSPECTOR -->
+          <div id="tabContentCode" class="p-4 space-y-4 hidden">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-semibold text-slate-600">Generated style-smart-it.css preview:</span>
+              <button onclick="copyGeneratedCode()" class="text-xs text-teal-600 font-semibold hover:underline">Copy CSS</button>
+            </div>
+            <pre id="codeView" class="bg-slate-900 text-slate-200 p-4 rounded-lg text-xs font-mono max-h-72 overflow-y-auto leading-relaxed"></pre>
+          </div>
+        </div>
+
+        <!-- GENERATE & DOWNLOAD BUTTONS -->
+        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 4. Instant Output Generation
+            </h2>
+            <span class="text-xs text-slate-400">Pure Client-Side (No server required)</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Download Bundle -->
+            <button onclick="downloadAllBundle()" class="sm:col-span-2 py-3 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+              <span>Download Complete Rebranding Bundle (.zip)</span>
+              <span class="text-xs opacity-80 font-normal">(UC zip, custom.css, config.properties &amp; Guide)</span>
+            </button>
+
+            <!-- Download Smart IT UC Zip -->
+            <button onclick="downloadSmartItZip()" class="py-2.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs shadow transition flex items-center justify-center gap-2">
+              <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+              <span>Download tenant-custom-res.zip</span>
+            </button>
+
+            <!-- Download PWA custom.css -->
+            <button onclick="downloadPwaCss()" class="py-2.5 px-3 rounded-lg bg-teal-700 hover:bg-teal-600 text-white font-semibold text-xs shadow transition flex items-center justify-center gap-2">
+              <svg class="w-4 h-4 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              <span>Download custom.css (for PWA)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3-STEP QUICK DEPLOYMENT INSTRUCTIONS -->
+        <div class="bg-slate-900 text-slate-200 rounded-xl p-5 shadow-sm space-y-3 text-xs">
+          <h3 class="font-bold text-sm text-teal-300 flex items-center gap-2">
+            <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            <span>How to Apply the Generated Files</span>
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+            <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700 space-y-1.5">
+              <span class="font-bold text-white flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full bg-teal-500 text-slate-950 font-bold flex items-center justify-center text-[10px]">A</span>
+                Smart IT Classic UC Rebranding:
+              </span>
+              <p class="text-slate-300">1. Place <code class="text-teal-300">tenant-custom-res.zip</code> in your <code class="text-slate-200">Rebranding_Utility</code> folder.</p>
+              <p class="text-slate-300">2. Run <code class="text-teal-300">DBFileSync-cmd.bat</code> (Option 1 - Upload).</p>
+              <p class="text-slate-300">3. Restart smartit pods: <br><code class="text-slate-400">kubectl rollout restart deployment smartit-master smartit-slave -n &lt;namespace&gt;</code></p>
+            </div>
+
+            <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700 space-y-1.5">
+              <span class="font-bold text-white flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full bg-teal-500 text-slate-950 font-bold flex items-center justify-center text-[10px]">B</span>
+                PWA Rebranding:
+              </span>
+              <p class="text-slate-300">1. Open browser: <code class="text-teal-300">https://&lt;mid-tier&gt;/arsys/pwa/#/config</code></p>
+              <p class="text-slate-300">2. Attach &amp; upload <code class="text-teal-300">custom.css</code>.</p>
+              <p class="text-slate-300">3. Open <code class="text-slate-200">/arsys/shared/config/config_cache.jsp</code>, click <strong class="text-white">Sync Cache</strong> on server row, and hard-refresh browser (<code class="text-teal-300">Ctrl + Shift + R</code>).</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- JAVASCRIPT LOGIC & EMBEDDED ASSETS -->
+  <script>
+    // Embedded Base64 Generic Assets
+    const GENERIC_LOGO_B64 = "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNjAgNTAiIHdpZHRoPSIyNjAiIGhlaWdodD0iNTAiPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwLCA1KSI+CiAgICA8IS0tIE1vZGVybiBFbnRlcnByaXNlIC8gQ2VyYW1pYyBTd2lybCBFbWJsZW0gLS0+CiAgICA8ZGVmcz4KICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkMSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwRDJGRiIgLz4KICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMEY1RDQiIC8+CiAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZDIiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwMDcyRkYiIC8+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDBEMkZGIiAvPgogICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPC9kZWZzPgogICAgPCEtLSBHZW9tZXRyaWMgSGV4YWdvbiAvIEtub3QgSWNvbiAtLT4KICAgIDxwYXRoIGQ9Ik0gMjAgNCBMIDM1IDEyLjUgTCAzNSAyOS41IEwgMjAgMzggTCA1IDI5LjUgTCA1IDEyLjUgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2dyYWQxKSIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiAvPgogICAgPHBhdGggZD0iTSAyMCAxMiBMIDI4IDE2LjUgTCAyOCAyNS41IEwgMjAgMzAgTCAxMiAyNS41IEwgMTIgMTYuNSBaIiBmaWxsPSJ1cmwoI2dyYWQyKSIgb3BhY2l0eT0iMC45IiAvPgogICAgPGNpcmNsZSBjeD0iMjAiIGN5PSIyMSIgcj0iMyIgZmlsbD0iI0ZGRkZGRiIgLz4KICA8L2c+CiAgPCEtLSBCcmFuZCBUeXBvZ3JhcGh5IC0tPgogIDx0ZXh0IHg9IjYwIiB5PSIyNiIgZm9udC1mYW1pbHk9Ii1hcHBsZS1zeXN0ZW0sIEJsaW5rTWFjU3lzdGVtRm9udCwgJ1NlZ29lIFVJJywgUm9ib3RvLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRkZGRkZGIiBsZXR0ZXItc3BhY2luZz0iMC41Ij5CQUxBSkk8L3RleHQ+CiAgPHRleHQgeD0iMTIyIiB5PSIyNiIgZm9udC1mYW1pbHk9Ii1hcHBsZS1zeXN0ZW0sIEJsaW5rTWFjU3lzdGVtRm9udCwgJ1NlZ29lIFVJJywgUm9ib3RvLCBIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iMzAwIiBmaWxsPSIjMDBGNUQ0IiBsZXR0ZXItc3BhY2luZz0iMSI+RU5URVJQUklTRVM8L3RleHQ+CiAgPHRleHQgeD0iNjAiIHk9IjM4IiBmb250LWZhbWlseT0iLWFwcGxlLXN5c3RlbSwgQmxpbmtNYWNTeXN0ZW1Gb250LCAnU2Vnb2UgVUknLCBSb2JvdG8sIEhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iOC41IiBmb250LXdlaWdodD0iNTAwIiBmaWxsPSIjOTRBM0I4IiBsZXR0ZXItc3BhY2luZz0iMS41Ij5HTE9CQUwgSVQgJmFtcDsgUE9UVEVSWSBTT0xVVElPTlM8L3RleHQ+Cjwvc3ZnPg==";
+    const GENERIC_FAV_B64  = "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZmF2Z3JhZCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwMEQyRkYiIC8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAwRjVENCIgLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjYiIGZpbGw9IiMwRjE3MkEiIC8+CiAgPHBhdGggZD0iTSAxNiA1IEwgMjYgMTAuNSBMIDI2IDIxLjUgTCAxNiAyNyBMIDYgMjEuNSBMIDYgMTAuNSBaIiBmaWxsPSJub25lIiBzdHJva2U9InVybCgjZmF2Z3JhZCkiIHN0cm9rZS13aWR0aD0iMi41IiAvPgogIDxjaXJjbGUgY3g9IjE2IiBjeT0iMTYiIHI9IjMiIGZpbGw9IiMwMEY1RDQiIC8+Cjwvc3ZnPg==";
+
+    // Application State
+    let currentLogoBytes = base64ToUint8(GENERIC_LOGO_B64);
+    let currentLogoFilename = "logo.svg";
+    let currentLogoMime = "image/svg+xml";
+
+    let currentFavBytes = base64ToUint8(GENERIC_FAV_B64);
+    let currentFavFilename = "favicon.ico";
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initAssets();
+      updateLivePreview();
+    });
+
+    function initAssets() {
+      const logoBlob = new Blob([currentLogoBytes], { type: currentLogoMime });
+      document.getElementById('logoPreviewImg').src = URL.createObjectURL(logoBlob);
+      document.getElementById('simLogo').src = URL.createObjectURL(logoBlob);
+
+      const favBlob = new Blob([currentFavBytes], { type: 'image/svg+xml' });
+      document.getElementById('faviconPreviewImg').src = URL.createObjectURL(favBlob);
+    }
+
+    function syncColor(type, value) {
+      if (!value.startsWith('#')) value = '#' + value;
+      if (type === 'primary') {
+        document.getElementById('primaryColorPicker').value = value;
+        document.getElementById('primaryColorText').value = value;
+      } else if (type === 'darkAccent') {
+        document.getElementById('darkAccentColorPicker').value = value;
+        document.getElementById('darkAccentColorText').value = value;
+      } else if (type === 'fadeline') {
+        document.getElementById('fadelineColorPicker').value = value;
+        document.getElementById('fadelineColorText').value = value;
+      } else if (type === 'highlight') {
+        document.getElementById('highlightColorPicker').value = value;
+        document.getElementById('highlightColorText').value = value;
+      } else if (type === 'secondaryBg') {
+        document.getElementById('secondaryBgPicker').value = value;
+        document.getElementById('secondaryBgText').value = value;
+      }
+      updateLivePreview();
+    }
+
+    // --- PRESETS ---
+    function loadGenericPreset() {
+      document.getElementById('orgName').value = "Balaji Enterprises";
+      syncColor('primary', '#0F172A');
+      syncColor('darkAccent', '#020617');
+      syncColor('fadeline', '#0EA5E9');
+      syncColor('highlight', '#10B981');
+      syncColor('secondaryBg', '#F8FAFC');
+      currentLogoBytes = base64ToUint8(GENERIC_LOGO_B64);
+      currentLogoFilename = "logo.svg";
+      currentLogoMime = "image/svg+xml";
+      currentFavBytes = base64ToUint8(GENERIC_FAV_B64);
+      currentFavFilename = "favicon.ico";
+      document.getElementById('logoFilename').textContent = "logo.svg (Balaji Vector)";
+      document.getElementById('favFilename').textContent = "favicon.ico (Multi-size)";
+      document.getElementById('assetStatus').textContent = "Balaji Brand Loaded";
+      initAssets();
+      updateLivePreview();
+    }
+
+    function loadPotteryPreset() {
+      document.getElementById('orgName').value = "Pottery Solutions";
+      syncColor('primary', '#78350F');
+      syncColor('darkAccent', '#451A03');
+      syncColor('fadeline', '#D97706');
+      syncColor('highlight', '#10B981');
+      syncColor('secondaryBg', '#FFFBEB');
+      document.getElementById('assetStatus').textContent = "Pottery Solutions Loaded";
+      updateLivePreview();
+    }
+
+    function loadEnterpriseBlue() {
+      document.getElementById('orgName').value = "Apex Global IT";
+      syncColor('primary', '#004A87');
+      syncColor('darkAccent', '#002B54');
+      syncColor('fadeline', '#00A3E0');
+      syncColor('highlight', '#00C853');
+      syncColor('secondaryBg', '#F0F7FC');
+      document.getElementById('assetStatus').textContent = "Enterprise Blue Loaded";
+      updateLivePreview();
+    }
+
+    function loadEmeraldTech() {
+      document.getElementById('orgName').value = "Emerald Systems";
+      syncColor('primary', '#064E3B');
+      syncColor('darkAccent', '#022C22');
+      syncColor('fadeline', '#10B981');
+      syncColor('highlight', '#34D399');
+      syncColor('secondaryBg', '#ECFDF5');
+      document.getElementById('assetStatus').textContent = "Emerald Tech Loaded";
+      updateLivePreview();
+    }
+
+    function handleLogoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      currentLogoFilename = file.name;
+      currentLogoMime = file.type || (file.name.endsWith('.svg') ? 'image/svg+xml' : 'image/png');
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        currentLogoBytes = new Uint8Array(e.target.result);
+        const blob = new Blob([currentLogoBytes], { type: currentLogoMime });
+        const url = URL.createObjectURL(blob);
+        document.getElementById('logoPreviewImg').src = url;
+        document.getElementById('simLogo').src = url;
+        document.getElementById('logoFilename').textContent = file.name + ' (' + Math.round(file.size / 1024) + ' KB)';
+        document.getElementById('assetStatus').textContent = "Custom Logo Loaded";
+        updateLivePreview();
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function handleFavUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      currentFavFilename = file.name;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        currentFavBytes = new Uint8Array(e.target.result);
+        const blob = new Blob([currentFavBytes], { type: 'image/x-icon' });
+        const url = URL.createObjectURL(blob);
+        document.getElementById('faviconPreviewImg').src = url;
+        document.getElementById('favFilename').textContent = file.name + ' (' + Math.round(file.size / 1024) + ' KB)';
+        document.getElementById('assetStatus').textContent = "Custom Favicon Loaded";
+        updateLivePreview();
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function switchTab(tab) {
+      document.getElementById('tabContentSmartIt').classList.toggle('hidden', tab !== 'smartit');
+      document.getElementById('tabContentPwa').classList.toggle('hidden', tab !== 'pwa');
+      document.getElementById('tabContentCode').classList.toggle('hidden', tab !== 'code');
+
+      document.getElementById('tabBtnSmartIt').className = tab === 'smartit'
+        ? "px-3 py-1 text-xs font-bold rounded-md bg-white text-slate-800 shadow-sm border border-slate-200"
+        : "px-3 py-1 text-xs font-bold rounded-md text-slate-500 hover:text-slate-800";
+
+      document.getElementById('tabBtnPwa').className = tab === 'pwa'
+        ? "px-3 py-1 text-xs font-bold rounded-md bg-white text-slate-800 shadow-sm border border-slate-200"
+        : "px-3 py-1 text-xs font-bold rounded-md text-slate-500 hover:text-slate-800";
+
+      document.getElementById('tabBtnCode').className = tab === 'code'
+        ? "px-3 py-1 text-xs font-bold rounded-md bg-white text-slate-800 shadow-sm border border-slate-200"
+        : "px-3 py-1 text-xs font-bold rounded-md text-slate-500 hover:text-slate-800";
+    }
+
+    function updateLivePreview() {
+      const primary = document.getElementById('primaryColorText').value;
+      const darkAccent = document.getElementById('darkAccentColorText').value;
+      const fadeline = document.getElementById('fadelineColorText').value;
+      const highlight = document.getElementById('highlightColorText').value;
+      const secBg = document.getElementById('secondaryBgText').value;
+
+      document.getElementById('simHeader').style.backgroundColor = primary;
+      document.getElementById('simFadeline').style.backgroundColor = fadeline;
+      document.getElementById('simNavOpen').style.backgroundColor = darkAccent;
+      document.getElementById('simNavOpen').style.color = highlight;
+
+      const sub = document.getElementById('simSubmenu');
+      sub.style.backgroundColor = primary;
+      sub.style.borderColor = fadeline;
+
+      ['simSubText1', 'simSubText2', 'simSubText3'].forEach(id => {
+        const el = document.getElementById(id);
+        el.style.color = '#FFFFFF';
+        el.style.fontWeight = '500';
+      });
+
+      ['simSubIcon1', 'simSubIcon2', 'simSubIcon3'].forEach(id => {
+        document.getElementById(id).style.color = highlight;
+      });
+
+      const pwaPri = document.getElementById('pwaPrimaryBtn');
+      pwaPri.style.backgroundColor = primary;
+      pwaPri.style.borderColor = primary;
+      pwaPri.style.color = '#FFFFFF';
+
+      const pwaSec = document.getElementById('pwaSecondaryBtn');
+      pwaSec.style.backgroundColor = secBg;
+      pwaSec.style.borderColor = primary;
+      pwaSec.style.color = primary;
+
+      const pwaAttach = document.getElementById('pwaAttachBtn');
+      pwaAttach.style.backgroundColor = '#DEF5F2';
+      pwaAttach.style.borderColor = fadeline;
+      pwaAttach.style.color = primary;
+
+      const pwaLink = document.getElementById('pwaLink');
+      pwaLink.style.color = fadeline;
+
+      document.getElementById('pwaStepBadge1').style.backgroundColor = primary;
+      document.getElementById('pwaStepText1').style.color = primary;
+
+      document.getElementById('codeView').textContent = generateSmartItCss();
+    }
+
+    function generateSmartItCss() {
+      const primary = document.getElementById('primaryColorText').value;
+      const darkAccent = document.getElementById('darkAccentColorText').value;
+      const fadeline = document.getElementById('fadelineColorText').value;
+      const highlight = document.getElementById('highlightColorText').value;
+      const org = document.getElementById('orgName').value;
+
+      return `/* ========================================================
+   BMC Helix Smart IT - Rebranding Stylesheet
+   Client: ${org}
+   Generated by BMC Helix Rebranding Studio
+   ======================================================== */
+
+:root {
+    --header__navigation-bar_background-color: ${primary} !important;
+    --header__navigation-links-color: #FFFFFF !important;
+    --nav-background: ${primary} !important;
+    --nav-links-color: #FFFFFF !important;
+    --nav-links-hover-color: ${highlight} !important;
+    --nav-menu-background: ${primary} !important;
+    --nav-menu-item-hover-color: ${darkAccent} !important;
+    --nav-menu-item-hover-text-color: ${highlight} !important;
+    --nav-menu-border-bottom: ${fadeline} !important;
+}
+
+/* 1. Header & Fadeline */
+.header__navigation-bar {
+    background-color: ${primary} !important;
+}
+
+.header__fadeline-bottom {
+    background-color: ${fadeline} !important;
+}
+
+/* 2. Brand Logo */
+.header__logo {
+    background: url("${currentLogoFilename}") no-repeat center left !important;
+    background-size: contain !important;
+    width: 250px !important;
+    height: 42px !important;
+    display: inline-block !important;
+    margin-top: 5px !important;
+    margin-left: 10px !important;
+}
+
+/* Hide duplicate app name */
+.header__app-name {
+    display: none !important;
+}
+
+/* 3. Navigation Links */
+.navigation-bar__item .navigation-bar__item-label {
+    color: #FFFFFF !important;
+    font-weight: 500 !important;
+}
+
+a.navigation-bar__item-label:hover,
+a.navigation-bar__item-label:focus {
+    color: ${highlight} !important;
+}
+
+/* 4. Active / Open Menu Item */
+.navigation-bar__item.open,
+.navigation-bar__item.active,
+.navigation-bar__item_active,
+.navigation-bar__item_selected {
+    background-color: ${darkAccent} !important;
+}
+
+.navigation-bar__item.open .navigation-bar__item-label,
+.navigation-bar__item.active .navigation-bar__item-label {
+    color: ${highlight} !important;
+}
+
+/* 5. Dropdown Sub-Menu */
+.navigation-bar__item-menu,
+.header__navigation-bar .dropdown-menu {
+    background-color: ${primary} !important;
+    border: 1px solid ${fadeline} !important;
+    border-radius: 4px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    padding: 6px 0 !important;
+}
+
+/* Ensure ALL sub-menu text is crisp White (#FFFFFF) */
+.navigation-bar__item-menu a,
+.navigation-bar__item-menu span,
+.navigation-bar__item-menu li,
+.navigation-bar__item-menu > li > a,
+.navigation-bar__item-menu > li > a > span,
+.header__navigation-bar .dropdown-menu a,
+.header__navigation-bar .dropdown-menu span,
+.header__navigation-bar .dropdown-menu > li > a,
+.header__navigation-bar .dropdown-menu > li > a > span,
+.header__navigation-bar .dropdown-item,
+.header__navigation-bar .dropdown-item span {
+    color: #FFFFFF !important;
+    background-color: transparent !important;
+}
+
+/* Sub-menu console icons */
+.navigation-bar__item-menu [class*="icon-"],
+.header__navigation-bar .dropdown-menu [class*="icon-"] {
+    color: ${highlight} !important;
+}
+
+/* Sub-menu item hover state */
+.navigation-bar__item-menu a:hover,
+.navigation-bar__item-menu a:hover span,
+.navigation-bar__item-menu > li > a:hover,
+.header__navigation-bar .dropdown-menu a:hover,
+.header__navigation-bar .dropdown-menu a:hover span,
+.header__navigation-bar .dropdown-item:hover {
+    background-color: ${darkAccent} !important;
+    color: ${highlight} !important;
+}
+
+.navigation-bar__item-menu a:hover [class*="icon-"],
+.header__navigation-bar .dropdown-menu a:hover [class*="icon-"] {
+    color: ${highlight} !important;
+}
+
+/* 6. Utility & User Icons on Right */
+.header__user .icon-search,
+.history-menu .icon-book_o,
+.header__user .dropdown-toggle.icon-comments_o {
+    color: #FFFFFF !important;
+}
+
+.header__user .icon-search:hover,
+.history-menu .icon-book_o:hover,
+.header__user .dropdown-toggle.icon-comments_o:hover {
+    color: ${highlight} !important;
+}
+`;
+    }
+
+    function generatePwaCss() {
+      const primary = document.getElementById('primaryColorText').value;
+      const darkAccent = document.getElementById('darkAccentColorText').value;
+      const fadeline = document.getElementById('fadelineColorText').value;
+      const highlight = document.getElementById('highlightColorText').value;
+      const secBg = document.getElementById('secondaryBgText').value;
+      const org = document.getElementById('orgName').value;
+      const logoB64 = uint8ToBase64(currentLogoBytes);
+
+      return `/* ==========================================================================
+   BMC Helix ITSM - Progressive Web Applications (PWA) Rebranding Stylesheet
+   Client: ${org}
+   Generated by BMC Helix Rebranding Studio
+   ========================================================================== */
+
+/* 1. Primary Buttons */
+.btn-primary {
+    color: #FFFFFF !important;
+    background-color: ${primary} !important;
+    border-color: ${primary} !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    color: #FFFFFF !important;
+    background-color: ${darkAccent} !important;
+    border-color: ${darkAccent} !important;
+    box-shadow: 0 0 0 3px rgba(0, 207, 173, 0.35) !important;
+}
+
+/* 2. Secondary Buttons */
+.btn-secondary {
+    color: ${primary} !important;
+    background-color: ${secBg} !important;
+    border-color: ${primary} !important;
+    font-weight: 500 !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active {
+    color: ${darkAccent} !important;
+    background-color: #DEF5F2 !important;
+    border-color: ${highlight} !important;
+    box-shadow: 0 0 0 3px rgba(12, 151, 168, 0.25) !important;
+}
+
+/* Attach Files Secondary Button (Field ID: 304431701) */
+[id='304431701'].btn-secondary {
+    color: ${primary} !important;
+    background-color: #DEF5F2 !important;
+    border-color: ${fadeline} !important;
+    font-weight: 600 !important;
+}
+
+[id='304431701'].btn-secondary:hover {
+    color: ${darkAccent} !important;
+    background-color: ${highlight} !important;
+    border-color: ${highlight} !important;
+}
+
+/* 3. Hyperlinks & Hamburger */
+.a-hamburger,
+.btn-link,
+a.btn-link {
+    font-weight: 500 !important;
+    color: ${fadeline} !important;
+    text-decoration: none !important;
+}
+
+.a-hamburger:hover,
+.a-hamburger:focus,
+.btn-link:hover,
+.btn-link:focus,
+a.btn-link:hover {
+    color: ${highlight} !important;
+    text-decoration: underline !important;
+}
+
+/* 4. Toolbar Icons */
+.d-icon-user_plus,
+.d-icon-envelope,
+.d-icon-send,
+.d-icon-star,
+.d-icon-printer,
+.d-icon-refresh,
+.d-icon-pencil {
+    color: ${primary} !important;
+    transition: color 0.2s ease !important;
+}
+
+.d-icon-user_plus:hover,
+.d-icon-envelope:hover,
+.d-icon-send:hover,
+.d-icon-star:hover,
+.d-icon-printer:hover,
+.d-icon-refresh:hover,
+.d-icon-pencil:hover {
+    color: ${highlight} !important;
+}
+
+/* 5. Anchor Stepper Navigation */
+.anchor-navigator__link:hover > .anchor-navigator__link--title {
+    color: ${highlight} !important;
+}
+
+.anchor-navigator__link.is-active > .anchor-navigator__link--title {
+    color: ${primary} !important;
+    font-weight: 700 !important;
+}
+
+/* 6. PWA Header (Standalone Views) */
+.a-header {
+    min-width: 320px !important;
+    background-color: ${primary} !important;
+    border-bottom: 3px solid ${fadeline} !important;
+}
+
+.menu-profile__username {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+}
+
+.a-product__name {
+    display: none !important;
+}
+
+/* 7. Embedded Vector Logo in PWA Header */
+.logo-helix.logo-light {
+    background-image: url("data:${currentLogoMime};base64,${logoB64}") !important;
+    background-repeat: no-repeat !important;
+    background-position: left center !important;
+    background-size: contain !important;
+    width: 250px !important;
+    height: 42px !important;
+    display: inline-block !important;
+}
+`;
+    }
+
+    function generateConfigProperties() {
+      return `DB_TYPE =mssql
+DB_URL =jdbc:sqlserver://<db-host>:1433;database=ARSystem
+DB_USER =ARAdmin
+DB_PWD =<password>
+ALWAYS_ON = Yes
+#MAX_FILE_SIZE=150
+
+## Target upload configuration for Smart IT Rebranding
+File1 = SmartIT,tenant-custom-res.zip,/opt/apache/tomcat/webapps/
+`;
+    }
+
+    function generateDeployGuide() {
+      return `================================================================================
+BMC HELIX REBRANDING DEPLOYMENT INSTRUCTIONS
+Generated for: ${document.getElementById('orgName').value}
+================================================================================
+
+PART 1: SMART IT UNIVERSAL CLIENT (UC) REBRANDING
+--------------------------------------------------------------------------------
+1. Copy 'tenant-custom-res.zip' into your Rebranding_Utility folder.
+2. Run DBFileSync-cmd.bat (Option 1 - Upload Rebranding) using config.properties.
+3. Restart Smart IT pods:
+   > kubectl rollout restart deployment smartit-master smartit-slave -n <namespace>
+
+--------------------------------------------------------------------------------
+PART 2: PROGRESSIVE WEB APPLICATIONS (PWA) REBRANDING
+--------------------------------------------------------------------------------
+1. Open browser: https://<mid-tier-domain>/arsys/pwa/#/config
+2. Under "Custom Style", upload 'custom.css'.
+3. Open: https://<mid-tier-domain>/arsys/shared/config/config_cache.jsp
+4. In server row, click [Sync Cache] and [Flush Cache-All Pods].
+5. Clear browser site data & hard reload (Ctrl + Shift + R).
+================================================================================
+`;
+    }
+
+    // --- PURE JS ZIP CREATOR (NO EXTERNAL DEPENDENCIES) ---
+    function makeCrcTable() {
+      let c;
+      const table = [];
+      for (let n = 0; n < 256; n++) {
+        c = n;
+        for (let k = 0; k < 8; k++) {
+          c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+        }
+        table[n] = c;
+      }
+      return table;
+    }
+    const crcTable = makeCrcTable();
+    function calcCrc32(uint8Array) {
+      let crc = 0 ^ (-1);
+      for (let i = 0; i < uint8Array.length; i++) {
+        crc = (crc >>> 8) ^ crcTable[(crc ^ uint8Array[i]) & 0xFF];
+      }
+      return (crc ^ (-1)) >>> 0;
+    }
+
+    class SimpleZip {
+      constructor() { this.entries = []; }
+      addFile(path, uint8Array) {
+        const cleanPath = path.replace(/\\\\/g, '/');
+        this.entries.push({ path: cleanPath, data: uint8Array });
+      }
+      addText(path, text) {
+        this.addFile(path, new TextEncoder().encode(text));
+      }
+      buildBlob() {
+        const localParts = [];
+        const centralParts = [];
+        let offset = 0;
+
+        for (const entry of this.entries) {
+          const nameBytes = new TextEncoder().encode(entry.path);
+          const dataBytes = entry.data;
+          const crc = calcCrc32(dataBytes);
+          const size = dataBytes.length;
+
+          const lh = new Uint8Array(30 + nameBytes.length);
+          const lhView = new DataView(lh.buffer);
+          lhView.setUint32(0, 0x04034b50, true);
+          lhView.setUint16(4, 20, true);
+          lhView.setUint16(6, 0x0800, true);
+          lhView.setUint16(8, 0, true);
+          lhView.setUint16(10, 0, true);
+          lhView.setUint16(12, 0, true);
+          lhView.setUint32(14, crc, true);
+          lhView.setUint32(18, size, true);
+          lhView.setUint32(22, size, true);
+          lhView.setUint16(26, nameBytes.length, true);
+          lhView.setUint16(28, 0, true);
+          lh.set(nameBytes, 30);
+
+          const ch = new Uint8Array(46 + nameBytes.length);
+          const chView = new DataView(ch.buffer);
+          chView.setUint32(0, 0x02014b50, true);
+          chView.setUint16(4, 20, true);
+          chView.setUint16(6, 20, true);
+          chView.setUint16(8, 0x0800, true);
+          chView.setUint16(10, 0, true);
+          chView.setUint16(12, 0, true);
+          chView.setUint16(14, 0, true);
+          chView.setUint32(16, crc, true);
+          chView.setUint32(20, size, true);
+          chView.setUint32(24, size, true);
+          chView.setUint16(28, nameBytes.length, true);
+          chView.setUint16(30, 0, true);
+          chView.setUint16(32, 0, true);
+          chView.setUint16(34, 0, true);
+          chView.setUint16(36, 0, true);
+          chView.setUint32(38, 0, true);
+          chView.setUint32(42, offset, true);
+          ch.set(nameBytes, 46);
+
+          localParts.push(lh, dataBytes);
+          centralParts.push(ch);
+          offset += lh.length + dataBytes.length;
+        }
+
+        const cdOffset = offset;
+        let cdSize = centralParts.reduce((acc, p) => acc + p.length, 0);
+
+        const eocd = new Uint8Array(22);
+        const eocdView = new DataView(eocd.buffer);
+        eocdView.setUint32(0, 0x06054b50, true);
+        eocdView.setUint16(4, 0, true);
+        eocdView.setUint16(6, 0, true);
+        eocdView.setUint16(8, this.entries.length, true);
+        eocdView.setUint16(10, this.entries.length, true);
+        eocdView.setUint32(12, cdSize, true);
+        eocdView.setUint32(16, cdOffset, true);
+        eocdView.setUint16(20, 0, true);
+
+        return new Blob([...localParts, ...centralParts, eocd], { type: 'application/zip' });
+      }
+    }
+
+    // --- DOWNLOAD TRIGGERS ---
+    function downloadSmartItZip() {
+      const tenantId = document.getElementById('tenantId').value.trim() || '000000000000001';
+      const zip = new SimpleZip();
+      const prefix = 'tenant-custom-res/' + tenantId + '/';
+
+      zip.addText(prefix + 'style-smart-it.css', generateSmartItCss());
+      zip.addFile(prefix + currentLogoFilename, currentLogoBytes);
+      zip.addFile(prefix + 'favicon.ico', currentFavBytes);
+      zip.addFile(prefix + 'custom-fav-icon.ico', currentFavBytes);
+
+      const blob = zip.buildBlob();
+      downloadBlob(blob, 'tenant-custom-res.zip');
+    }
+
+    function downloadPwaCss() {
+      const css = generatePwaCss();
+      const blob = new Blob([css], { type: 'text/css' });
+      downloadBlob(blob, 'custom.css');
+    }
+
+    function downloadAllBundle() {
+      const tenantId = document.getElementById('tenantId').value.trim() || '000000000000001';
+
+      const innerZip = new SimpleZip();
+      const prefix = 'tenant-custom-res/' + tenantId + '/';
+      innerZip.addText(prefix + 'style-smart-it.css', generateSmartItCss());
+      innerZip.addFile(prefix + currentLogoFilename, currentLogoBytes);
+      innerZip.addFile(prefix + 'favicon.ico', currentFavBytes);
+      innerZip.addFile(prefix + 'custom-fav-icon.ico', currentFavBytes);
+      const innerZipBlob = innerZip.buildBlob();
+
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        const innerZipBytes = new Uint8Array(fileReader.result);
+
+        const masterZip = new SimpleZip();
+        masterZip.addFile('tenant-custom-res.zip', innerZipBytes);
+        masterZip.addText('custom.css', generatePwaCss());
+        masterZip.addText('config.properties', generateConfigProperties());
+        masterZip.addText('README_DEPLOYMENT.txt', generateDeployGuide());
+
+        const masterBlob = masterZip.buildBlob();
+        downloadBlob(masterBlob, 'BMC_Helix_Rebranding_Bundle.zip');
+      };
+      fileReader.readAsArrayBuffer(innerZipBlob);
+    }
+
+    function downloadBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
+    }
+
+    function copyGeneratedCode() {
+      const code = generateSmartItCss();
+      navigator.clipboard.writeText(code).then(() => {
+        alert('CSS copied to clipboard!');
+      });
+    }
+
+    function base64ToUint8(base64) {
+      const binaryString = atob(base64);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      return bytes;
+    }
+
+    function uint8ToBase64(bytes) {
+      let binary = '';
+      const len = bytes.byteLength;
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary);
+    }
+  </script>
+</body>
+</html>

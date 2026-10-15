@@ -44,6 +44,7 @@
             <li><a href="#projects">Projects</a></li>
             <li><a href="#articles">Articles</a></li>
             <li><a href="servicenow-mock-exams/index.html">Mock Exams</a></li>
+            <li><a href="helix-rebranding-studio/index.html">Rebranding Studio</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
         <div class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></div>
@@ -55,213 +56,6 @@
             <span class="close-btn article-close-btn">&times;</span>
             <div id="articleViewerContainer" class="article-body-scroll"></div>
         </div>
-    </div>
-
-    <!-- Article Content Hidden Blocks -->
-    <div id="article-content-1" style="display:none;">
-        <h2>Disaster Recovery (DR) Failover & Failback in Containerized Helix</h2>
-        <p><strong>Overview:</strong> Managing zero-data-loss DR scenarios for BMC Helix deployed on Kubernetes clusters is critical for enterprise continuity. The architecture typically involves active-standby clusters across separate geographic regions.</p>
-        <h3>1. Database Synchronization</h3>
-        <p>The foundation of Helix DR is PostgreSQL streaming replication. You must ensure that WAL (Write-Ahead Logs) are continuously shipped from the primary site to the secondary site. In a failover scenario, the standby database is promoted to primary.</p>
-        <h3>2. Persistent Volume Management</h3>
-        <p>For stateful services (like Elasticsearch or MinIO), cross-region storage replication (such as Ceph RBD mirroring or cloud-native replication like AWS EBS Snapshots) ensures data consistency before pod spin-up at the DR site.</p>
-        <h3>3. Ingress and DNS Routing</h3>
-        <p>Failover is triggered via Global Server Load Balancing (GSLB) or Route53 DNS updates. Once the standby cluster is verified healthy, DNS TTLs are flushed, routing traffic to the DR ingress controllers.</p>
-        <h3>4. Failback Procedure</h3>
-        <p>Failback requires reversing the database replication flow to sync the delta changes back to the original primary site before restoring normal operations.</p>
-    </div>
-
-    <div id="article-content-2" style="display:none;">
-        <h2>Resolving CMDB Synchronization & Reconciliation Bottlenecks</h2>
-        <p><strong>Overview:</strong> When CMDB reconciliation jobs hang or fail to sync CIs accurately from discovery sources, it directly impacts ITSM processes. Here is a proven methodology to achieve 80%+ CMDB accuracy.</p>
-        <h3>1. Identify the Bottleneck</h3>
-        <p>Check the <code>arrecond.log</code> and database execution plans. Long-running queries usually indicate missing indexes on core attributes (like SerialNumber or TokenId) on the BaseElement table.</p>
-        <h3>2. Tune Reconciliation Engine Threads</h3>
-        <p>Increase the number of threads allocated to the Reconciliation Engine in the AR System Administration Console. However, ensure your database CPU can handle the increased parallel execution.</p>
-        <h3>3. Optimize Identification Rules</h3>
-        <p>Poorly constructed identification rules (e.g., using 'Name' instead of 'SerialNumber' and 'Domain') lead to massive table scans and duplicate CIs. Restructure rules to prioritize indexed, unique attributes.</p>
-        <h3>4. Chunking and Batch Processing</h3>
-        <p>If integrating via REST API or Pentaho, ensure data is chunked. Do not push 100,000 CIs in a single transaction. Break them into batches of 2,000 to prevent AR System timeout errors.</p>
-    </div>
-
-    <div id="article-content-3" style="display:none;">
-        <h2>ServiceNow Discovery vs BMC Discovery: Enterprise Architecture</h2>
-        <p><strong>Overview:</strong> As organizations transition or operate in hybrid environments, understanding the architectural differences between ServiceNow ITOM Discovery and BMC Helix Discovery is paramount.</p>
-        <h3>1. Agentless Scanning Paradigms</h3>
-        <p>Both platforms rely heavily on agentless scanning (SSH, WMI, SNMP). However, BMC Discovery utilizes a heavily optimized reasoning engine that infers application topologies out-of-the-box, whereas ServiceNow relies on precise pattern matching and probes/sensors.</p>
-        <h3>2. MID Servers vs Outposts</h3>
-        <p>ServiceNow requires MID (Management, Instrumentation, and Discovery) servers deployed securely within the customer network. BMC Helix utilizes 'Outposts' which serve a nearly identical function—bridging the SaaS platform to the secure on-premise infrastructure securely via HTTPS.</p>
-        <h3>3. CMDB Data Models</h3>
-        <p>ServiceNow uses the CSDM (Common Service Data Model), which closely aligns infrastructure to business services. BMC uses the CDM (Common Data Model). Mapping classes between BMC's <code>BMC_ComputerSystem</code> and ServiceNow's <code>cmdb_ci_computer</code> requires careful ETL planning.</p>
-    </div>
-
-    <div id="article-content-4" style="display:none;">
-        <h2>Automating ITSM Deployments via Helm Charts & ArgoCD</h2>
-        <p><strong>Overview:</strong> Implementing GitOps principles to manage complex ITSM container deployments ensures configuration consistency across DEV, QA, and PROD environments.</p>
-        <h3>1. The Helm Chart Structure</h3>
-        <p>Containerized ITSM platforms consist of dozens of microservices. Managing them requires custom Helm charts that template environment variables (DB connections, memory limits) into <code>values-prod.yaml</code> and <code>values-dev.yaml</code>.</p>
-        <h3>2. Setting up ArgoCD</h3>
-        <p>ArgoCD is deployed into the Kubernetes cluster and configured to monitor a secure Git repository. Any changes pushed to the `main` branch of the Git repo are automatically detected by ArgoCD.</p>
-        <h3>3. The Sync Process</h3>
-        <p>When ArgoCD detects a configuration drift (e.g., changing an ITSM pod replica count from 2 to 4 in Git), it automatically applies the difference to the Kubernetes cluster, keeping the cluster in sync with the repository.</p>
-        <h3>4. Secrets Management</h3>
-        <p>Never store raw database passwords in Git. Use tools like HashiCorp Vault or Bitnami Sealed Secrets. ArgoCD will inject the secure secrets into the pods during deployment.</p>
-    </div>
-
-    <div id="article-content-5" style="display:none;">
-        <h2>Restoring ITSM Dashboard Connectivity & Missing OOTB Dashboards</h2>
-        <p><strong>Overview:</strong> Post-installation of the ITSM stack, a common issue is the dashboard failing to connect to the ITSM database, resulting in missing Out-Of-The-Box (OOTB) dashboards. This guide details the resolution process: updating the database connection at the pod level and re-registering tenant services via the TCTL utility.</p>
-        
-        <h3>Step 1: Add the Missing Connection from the Pod Level</h3>
-        <p>First, access the primary PostgreSQL database pod for the reporting database to update the platform URL. Use <code>patronictl list</code> to identify the leader node.</p>
-<pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1);">
-kubectl exec -it postgres-bmc-pg-ha-17-0 -n helixprodplatform -- bash
-patronictl list
-
-+ Cluster: postgres-bmc-pg-ha-17 (7615280850181857344) --------+----+-----------+
-| Member                  | Host         | Role    | State     | TL | Lag in MB |
-+-------------------------+--------------+---------+-----------+----+-----------+
-| postgres-bmc-pg-ha-17-0 | 10.244.4.230 | Replica | streaming |  2 |         0 |
-| postgres-bmc-pg-ha-17-1 | 10.244.2.15  | Leader  | running   |  2 |           |  <<--Login to the running Leader Pod-->>
-| postgres-bmc-pg-ha-17-2 | 10.244.5.176 | Replica | streaming |  2 |         0 |
-+-------------------------+--------------+---------+-----------+----+-----------+
-
-exit
-kubectl exec -it postgres-bmc-pg-ha-17-1 -n helixprodplatform -- bash
-psql -U postgres -d reportdb
-
-# Verify current data sources
-SELECT id, org_id, name, json_data FROM public.data_source;
-
- id |  org_id   |     name      | json_data
-----+-----------+---------------+-----------
-  1 | 342145481 | BMC Helix     | {}          <<--Reporting URL is missing--->>
-  2 | 342145481 | BMC Helix API | {}
-(2 rows)
-
-
-# Update the BMC Helix data source with the correct platform URL
-update data_source set json_data = ' {"platformURL": "https://itsm-reporting.example.com"} ' where id = 1;
-
-</pre>
-
-        <h3>Step 2: Retrieve Tenant ID from RSSO</h3>
-        <p>Before using the TCTL utility, you need your unique Tenant ID. Log into your <strong>Remedy Single Sign-On (RSSO)</strong> Admin Console. Navigate to the <strong>Tenants</strong> page, locate your target tenant, and copy the numerical Tenant ID (e.g., <code>123456789</code>).</p>
-
-        <h3>Step 3: Create the JSON Configuration File</h3>
-        <p>Create a JSON file named <code>itsm.json</code> that will be used to pass the updated service configuration to the TCTL utility. You can create this file on your server using a text editor like <code>vi</code>.</p>
-<pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1);">
-
-tctl login
-tctl get tenant-service 123456789
-GODEBUG is set to: tlsrsakex=1
-Using config file: D:\TCTL Utility\config
-HTTP Response Status: 200 OK
-TENANT                |ENVIRONMENT           |SERVICE                  |ID                                   |STATUS
-Example                   |production            |ADE Audit Service        |b1a9c70f-0103-4913-848f-6f2a1f367b97 |ACTIVE
-Example                   |production            |Credential               |4cde745c-527e-478f-bf67-6fbf2de1870f |ACTIVE
-Example                   |production            |Reporting                |c23bb1b0-103b-4887-9f8e-1db2e4387e26 |ACTIVE
-Example                   |production            |ADE Notification Service |3cf1f873-85b1-486d-954c-c7eb1e0ac4e5 |ACTIVE
-Example                   |production            |BWF                      |f2858c7f-6b3b-4bce-8e71-78cc67d100e5 |ACTIVE
-Example                   |production            |DWP                      |5d5e4240-3608-4481-b0bc-760b3ebcc520 |ACTIVE
-Example                   |production            |ITSM                     |4186250f-0eb9-4bf3-92f8-70460b26cfbc |ACTIVE
-Example                   |production            |IS                       |36884268-afdb-4716-9edd-fddede79a60c |ACTIVE
-Example                   |production            |DWPC                     |b78f93f8-0eec-4de4-ad6f-953a0b5f2369 |ACTIVE
-
-
-# vi itsm.json
-{
-  "TENANT": "example",
-  "ENVIRONMENT": "production",
-  "SERVICE": "ITSM",
-  "ID": "4186250f-0eb9-4bf3-92f8-70460b26cfbc",
-  "STATUS": "ACTIVE"
-}
-
-# Create Similar files for other service Like DWPC, DWPC, IS
-</pre>
-
-        <h3>Step 4: Restore OOTB Dashboards using the TCTL Utility For ITSM Dashboards</h3>
-        <p>With your Tenant ID and <code>itsm.json</code> file ready, log into TCTL to update the tenant services (ITSM, DWP, IS, DWPC, BWF).</p>
-<pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1);">
-
-
-# Execute updates for each service ID matching your environment:
-tctl update tenant-service 123456789 -i 4186250f-0eb9-4bf3-92f8-70460b26cfbc -f "ITSM.json"
-tctl update tenant-service 123456789 -i 5d5e4240-3608-4481-b0bc-760b3ebcc520 -f "IS.json"
-tctl update tenant-service 123456789 -i 36884268-afdb-4716-9edd-fddede79a60c -f "DWP.json"
-tctl update tenant-service 123456789 -i b78f93f8-0eec-4de4-ad6f-953a0b5f2369 -f "DWPC.json"
-tctl update tenant-service 123456789 -i f2858c7f-6b3b-4bce-8e71-78cc67d100e5 -f "BWF.json"
-</pre>
-        <p>Once the tenant services are updated, the OOTB dashboards will be fully restored and successfully connected to the reporting database.</p>
-    </div>
-
-    <div id="article-content-6" style="display:none;">
-        <h2>Guide: Resetting Ticket Sequence Numbers in BMC Helix ITSM</h2>
-        <p><strong>Author:</strong> Balaji</p>
-        <p><strong>Target Environment:</strong> BMC Helix ITSM 25.4 (On-Premises), Kubernetes Compact Deployment, Oracle Database</p>
-        
-        <h3>Understanding the AR Server Cache</h3>
-        <p>BMC Helix generates ticket IDs (e.g., INC0000500000) using specific generator forms. The AR System Server pre-fetches a block of these IDs (typically 100) into its RAM for performance. To successfully change the starting number, you must scale down the AR server pods before updating the Oracle database; otherwise, the running server will overwrite your database changes with its cached memory.</p>
-        
-        <h3>Step 1: Verify the Target Forms</h3>
-        <p>You can update the sequence directly by form name. Ensure you target both the main transaction form (e.g., <code>HPD:Help Desk</code>) and its corresponding generator form (e.g., <code>HPD:CFG TicketNumGenerator</code>). You can verify their current sequences with this query:</p>
-        <div style="position: relative; margin-bottom: 1.5rem;">
-            <button onclick="copyCode(this, 'code-block-1')" class="btn btn-primary" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 0.8rem; z-index: 10;"><i class="fa-regular fa-copy"></i> Copy</button>
-            <pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 0;"><code id="code-block-1">SELECT schemaId, name, nextId FROM arschema 
-WHERE name IN (
-    'HPD:Help Desk', 'HPD:CFG TicketNumGenerator',
-    'CHG:Infrastructure Change', 'CHG:CFG Ticket Num Generator',
-    'WOI:WorkOrder', 'WOI:CFG TicketNumGenerator',
-    'SRM:Request', 'SRM:CFG TicketNumGenerator',
-    'SB:ServiceRequestStub', 'myit-sb:Order'
-);</code></pre>
-        </div>
-        
-        <h3>Step 2: Scale Down the AR Server Pods</h3>
-        <p>To clear the memory cache and release database locks, scale down your AR System workload. For a compact Kubernetes deployment, bring down the FTS pod:</p>
-        <div style="position: relative; margin-bottom: 1.5rem;">
-            <button onclick="copyCode(this, 'code-block-2')" class="btn btn-primary" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 0.8rem; z-index: 10;"><i class="fa-regular fa-copy"></i> Copy</button>
-            <pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 0;"><code id="code-block-2">kubectl scale statefulset platform-fts --replicas=0 -n &lt;your-namespace&gt;</code></pre>
-        </div>
-        <p>Ensure the pod is fully terminated before proceeding.</p>
-
-        <h3>Step 3: Execute the Oracle Database Updates</h3>
-        <p>Log into your Oracle database and execute the following UPDATE commands. Make sure you issue a COMMIT statement.</p>
-        <div style="position: relative; margin-bottom: 1.5rem;">
-            <button onclick="copyCode(this, 'code-block-3')" class="btn btn-primary" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 0.8rem; z-index: 10;"><i class="fa-regular fa-copy"></i> Copy</button>
-            <pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 0;"><code id="code-block-3">-- Service Request Management
-UPDATE arschema SET nextId = 50000 WHERE name = 'SRM:Request';
-UPDATE arschema SET nextId = 50000 WHERE name = 'SRM:CFG TicketNumGenerator';
-
--- Incident Management
-UPDATE arschema SET nextId = 50000 WHERE name = 'HPD:Help Desk';
-UPDATE arschema SET nextId = 50000 WHERE name = 'HPD:CFG TicketNumGenerator';
-
--- Work Order Management
-UPDATE arschema SET nextId = 50000 WHERE name = 'WOI:WorkOrder';
-UPDATE arschema SET nextId = 50000 WHERE name = 'WOI:CFG TicketNumGenerator';
-
--- Change Management
-UPDATE arschema SET nextId = 50000 WHERE name = 'CHG:Infrastructure Change';
-UPDATE arschema SET nextId = 50000 WHERE name = 'CHG:CFG Ticket Num Generator';
-
--- DWPC Requests (Digital Workplace Catalog)
-UPDATE arschema SET nextId = 50000 WHERE name = 'SB:ServiceRequestStub';
-UPDATE arschema SET nextId = 50000 WHERE name = 'myit-sb:Order'; -- Order ID
-
-COMMIT;</code></pre>
-        </div>
-
-        <h3>Step 4: Scale Up and Verify</h3>
-        <p>Bring the AR System server back online. Upon initialization, it will fetch the new sequence into its clean cache.</p>
-        <div style="position: relative; margin-bottom: 1.5rem;">
-            <button onclick="copyCode(this, 'code-block-4')" class="btn btn-primary" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 0.8rem; z-index: 10;"><i class="fa-regular fa-copy"></i> Copy</button>
-            <pre style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; overflow-x: auto; color: var(--helix-accent-blue); font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 0;"><code id="code-block-4">kubectl scale statefulset platform-fts --replicas=1 -n &lt;your-namespace&gt;</code></pre>
-        </div>
-        <p>Once the Mid-Tier is accessible, create a test ticket for each module to verify the new ID format (e.g., PBI000000100000).</p>
-        
-        <p><em>Would you like to include a section in this article detailing how to modify the prefix length (e.g., standardizing to a 13-character string instead of 15) using BMC Developer Studio? Connect with me to learn more!</em></p>
     </div>
 
     <main class="page-container">
@@ -538,6 +332,12 @@ COMMIT;</code></pre>
                         <p>Test your knowledge with my custom-built ServiceNow CIS - Data Foundations mock exams. Protected by secure access codes.</p>
                         <a href="servicenow-mock-exams/index.html" class="btn btn-primary" style="margin-top: 15px; display: inline-block;">Take an Exam</a>
                     </div>
+                    <div class="glass-card sn-card">
+                        <div class="card-icon"><i class="fa-solid fa-palette"></i></div>
+                        <h3>BMC Helix Rebranding Studio</h3>
+                        <p>A client-side utility to configure brand palettes, logos, and generate 1-click rebranding packages for Smart IT UC &amp; PWA screens.</p>
+                        <a href="helix-rebranding-studio/index.html" class="btn btn-primary helix-btn" style="margin-top: 15px; display: inline-block;">Launch Studio</a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -625,7 +425,7 @@ COMMIT;</code></pre>
                         <div class="article-tag">BMC Helix / K8s</div>
                         <h3>Disaster Recovery (DR) Failover & Failback in Containerized Helix</h3>
                         <p>A comprehensive guide on managing zero-data-loss DR scenarios for BMC Helix deployed on Kubernetes clusters, including database synchronization and ingress routing.</p>
-                        <a href="#" class="read-more" onclick="openArticle('article-content-1'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="articles/disaster-recovery-dr-failover-failback-in-containerized-helix.html" class="read-more">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                     
                     <!-- Article 2 -->
@@ -633,7 +433,7 @@ COMMIT;</code></pre>
                         <div class="article-tag">BMC Helix ITSM</div>
                         <h3>Resolving CMDB Synchronization & Reconciliation Bottlenecks</h3>
                         <p>Step-by-step troubleshooting for when CMDB reconciliation jobs hang or fail to sync CIs accurately from discovery sources. Achieving 80%+ accuracy.</p>
-                        <a href="#" class="read-more" onclick="openArticle('article-content-2'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="articles/resolving-cmdb-synchronization-reconciliation-bottlenecks.html" class="read-more">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
 
                     <!-- Article 3 -->
@@ -641,7 +441,7 @@ COMMIT;</code></pre>
                         <div class="article-tag">ServiceNow</div>
                         <h3>ServiceNow Discovery vs BMC Discovery: Enterprise Architecture</h3>
                         <p>An architectural comparison of deploying ServiceNow ITOM Discovery in environments heavily reliant on legacy BMC footprints.</p>
-                        <a href="#" class="read-more" onclick="openArticle('article-content-3'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="articles/servicenow-discovery-vs-bmc-discovery-enterprise-architecture.html" class="read-more">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
 
                     <!-- Article 4 -->
@@ -649,7 +449,7 @@ COMMIT;</code></pre>
                         <div class="article-tag">Kubernetes / DevOps</div>
                         <h3>Automating ITSM Deployments via Helm Charts & ArgoCD</h3>
                         <p>How to implement GitOps principles to manage complex ITSM container deployments, ensuring configuration consistency across environments.</p>
-                        <a href="#" class="read-more" onclick="openArticle('article-content-4'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="articles/automating-itsm-deployments-via-helm-charts-argocd.html" class="read-more">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
 
                     <!-- Article 5 -->
@@ -657,7 +457,7 @@ COMMIT;</code></pre>
                         <div class="article-tag">BMC Helix / K8s</div>
                         <h3>Restoring ITSM Dashboard Connectivity & OOTB Dashboards</h3>
                         <p>A technical guide on resolving post-installation connection issues between the reporting dashboard and the ITSM Database using PostgreSQL and the TCTL utility.</p>
-                        <a href="#" class="read-more" onclick="openArticle('article-content-5'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="articles/restoring-itsm-dashboard-connectivity-missing-ootb-dashboards.html" class="read-more">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                     
                     <!-- Article 6 -->
@@ -665,7 +465,7 @@ COMMIT;</code></pre>
                         <div class="article-tag">BMC Helix / K8s</div>
                         <h3>Resetting Ticket Sequence Numbers in BMC Helix ITSM</h3>
                         <p>A guide on how to safely reset ticket sequence numbers by clearing the AR Server cache, scaling down pods, and updating the Oracle Database.</p>
-                        <a href="#" class="read-more" onclick="openArticle('article-content-6'); return false;">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="articles/guide-resetting-ticket-sequence-numbers-in-bmc-helix-itsm.html" class="read-more">Read Solution <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
